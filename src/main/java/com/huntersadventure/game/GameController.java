@@ -19,12 +19,14 @@ public class GameController {
     public static final String cyan = "\033[1;36m";
     public static final String yellow = "\033[1;33m";
     public static final String red = "\033[1;31m";
+    boolean gameEnd = true;
 
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     Characters p1 = new Characters();
     Characters miniboss1 = new Characters();
     Characters miniboss2 = new Characters();
     Characters finalboss = new Characters();
+    Combat combat = new Combat();
     List<Location> townMap = new ArrayList<>();
     List<Item> gameItems = new ArrayList<>();
     ArrayList<String> playerInventory = new ArrayList<>();
@@ -50,6 +52,7 @@ public class GameController {
         generateMap();
         createPlayer(townMap);
         startPrompt();
+        setGameEnd(false);
         startGame();
     }
 
@@ -175,7 +178,7 @@ public class GameController {
             finalboss = json.fromJson(finalBossNode, Characters.class);
 
             p1.setLocation(map.get(0));
-            miniboss1.setLocation(map.get(7));
+            miniboss1.setLocation(map.get(4));
             miniboss2.setLocation(map.get(8));
             finalboss.setLocation(map.get(9));
 
@@ -198,7 +201,7 @@ public class GameController {
             input = in.readLine();
             output = runCommand(input);
             System.out.println(output);
-        } while (!input.equals("quit"));
+        } while (!gameEnd);
     }
 
     private void help() {
@@ -329,6 +332,7 @@ public class GameController {
                     help();
                     break;
                 case "quit":
+                    setGameEnd(true);
                     break;
                 case "look":
                     StringBuilder inventory = new StringBuilder();
@@ -542,7 +546,9 @@ public class GameController {
                     } else if (commandTwo.equals("key") && p1.getLocation().getItems().contains("locker")) {
                         System.out.println("WoW! It is an armor that can protect you from the monsters!");
                         addShield = true;
-
+                        p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
+                                .filter(i -> i.getName().equals(commandTwo))
+                                .findFirst().orElse(null)));
                     } else if (commandTwo.equals("map")) {
                         printMap();
 
@@ -603,14 +609,30 @@ public class GameController {
 
     public void movePlayer(Characters player, Location location) {
         player.setLocation(location);
+        String combatResult = "";
         if (player.getLocation() == miniboss1.getLocation()) {
-            miniBossEncounter(miniboss1);
+            combatResult = combat.enemyEncounter(miniboss1, player);
         } else if (player.getLocation() == miniboss2.getLocation()) {
-            miniBossEncounter(miniboss2);
+            combatResult = combat.enemyEncounter(miniboss2, player);
         } else if (player.getLocation() == finalboss.getLocation()) {
-            finalBossEncounter(finalboss);
+            combatResult = combat.enemyEncounter(finalboss, player);
+        }
+
+        if (combatResult.equals("playerWin")) {
+            System.out.println("You ran into an enemy and defeated them in a gruesome battle\n");
+        } else if (combatResult.equals("enemyWin")) {
+            System.out.println("You ran into an enemy and lost\n");
+            setGameEnd(true);
         }
     }
+
+    //    public void combatResolution(String winner) {
+//        if (winner.equals(p1.getName())){
+//            // player win, print souts and other calls
+//        } else {
+//            // player loss, show game over
+//        }
+//    }
 
     public int moveTo(Characters player, Direction direction) {
         Location location = player.getLocation();
@@ -659,6 +681,15 @@ public class GameController {
 
     private void goEast() {
         movePlayerTo(Direction.EAST);
+    }
+
+    public void setGameEnd(boolean gameEnd) {
+        this.gameEnd = gameEnd;
+    }
+
+    public void gameOver() {
+        System.out.println("YOU HAVE DIED");
+        setGameEnd(true);
     }
 
     public void startPrompt() throws IOException {
