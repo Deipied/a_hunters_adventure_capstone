@@ -415,10 +415,10 @@ public class GameController {
                     return "That person isn't here!";
                 }
             }if(p1.getLocation().getName().equals("Abandoned Checkpoint")){
-                if(commandTwo.equalsIgnoreCase("Bandit")){
+                if(commandTwo.equalsIgnoreCase("Bandit") && miniboss1.getLocation() != null){
                     NPC.initBandit();
-                } else if (commandTwo != "bandit"){
-                    return "That person isn't here!";
+                } else {
+                    return "That enemy isn't here!";
                 }
             }if(p1.getLocation().getName().equals("Farmland")){
                 return "There are no people in the Farmlands!";
@@ -427,15 +427,15 @@ public class GameController {
             }if(p1.getLocation().getName().equals("Inn")){
                 return "The Inn is empty. There haven't been travelers in the town lately.";
             }if(p1.getLocation().getName().equals("Dungeon Entrance")){
-                if(commandTwo.equalsIgnoreCase("Faceless") || (commandTwo.equalsIgnoreCase("The Faceless"))){
+                if(commandTwo.equalsIgnoreCase("Faceless") && miniboss2.getLocation() != null){
                     NPC.initFaceless();
-                }else if(commandTwo != "Faceless") {
+                }else {
                     return "That enemy is not here!";
                 }
-            }if(p1.getLocation().getName().equals("Inn") && p1.getLocation() == finalboss.getLocation()){
-                if(commandTwo.equalsIgnoreCase("Man-Eater") || (commandTwo.equalsIgnoreCase("The Man-Eater"))){
+            }if(p1.getLocation().getName().equals("Dungeon")){
+                if(commandTwo.equalsIgnoreCase("Man-Eater") && finalboss.getLocation() != null){
                     NPC.initManEater();
-                } else if (commandTwo != "Faceless") {
+                } else {
                     return "That enemy is not here!";
                 }
             }
@@ -625,9 +625,12 @@ public class GameController {
 
         if (loser != null && loser != p1) {
             loser.setLocation(null);
+            if (loser == finalboss) {
+                gameWin();
+            }
         } else if (loser == p1) {
-            System.out.println("You ran into an enemy and lost\n");
-            setGameEnd(true);
+            System.out.println("You died to an enemy\n");
+            gameOver();
         }
     }
 
