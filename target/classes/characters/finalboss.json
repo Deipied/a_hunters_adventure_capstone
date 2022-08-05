@@ -1,7 +1,8 @@
 {
   "name": "ManEater",
-  "health": 200,
+  "health": 5,
   "damage": 40,
   "shield": 0,
-  "desc": "A monstrous beast, covered in matted blood-stained fur and strange irregular patches of what look to be skin. Its eyes seem to show a shred of humanity somehow, but its rotted fangs say otherwise"
+  "description": "A monstrous beast, covered in matted blood-stained fur and strange irregular patches of what look to be skin. Its eyes seem to show a shred of humanity somehow, but its rotted fangs say otherwise",
+  "defeat": "boss defeated, congrats you have WON"
 }
