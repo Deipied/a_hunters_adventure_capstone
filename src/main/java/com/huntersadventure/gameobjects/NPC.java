@@ -99,7 +99,9 @@ public class NPC extends Characters {
                 String desc = bsNode.get("desc").textValue();
                 System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("\"Ahh a Hunter! Perfect timing. We're stretched thin while we investigate this attack, but there's an  " + yellow + "Abandoned Checkpoint" + ANSI_RESET +"\nwe need to retake down the way on the other path from a local bandit. Perhaps you can help us out?\"" + "he asks.");
+                System.out.println("\"Ahh a Hunter! Perfect timing. We're stretched thin while we investigate this attack, " +
+                        "but there's an  " + yellow + "Abandoned Checkpoint" + ANSI_RESET +
+                        "\nwe need to retake down the way on the other path from a local bandit. Perhaps you can help us out?\"" + "he asks.");
                 TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
@@ -128,10 +130,11 @@ public class NPC extends Characters {
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss1.json"));
 
             if (!wasPrinted) {
-                String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
+//                String desc = bsNode.get("description").textValue();
+//                System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("\"Oh, a HUNTER! I don't suppose we could let this one slide could we? I hear there is some worthwhile treasure around here we could split...\"");
+                System.out.println("\"Oh, a HUNTER! I don't suppose we could let this one slide could we? " +
+                        "I hear there is some worthwhile treasure around here we could split...\"");
                 TimeUnit.MILLISECONDS.sleep(750);
                 dialogue.remove(0);
                 wasPrinted = true;
@@ -151,10 +154,11 @@ public class NPC extends Characters {
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss2.json"));
 
             if (!wasPrinted) {
-                String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
+//                String desc = bsNode.get("description").textValue();
+//                System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("The creature raises it's great-axe, clearly willing to kill you regardless of its' own agony. It's time to put an end to it's suffering.");
+                System.out.println("The creature raises it's great-axe, clearly willing to kill you regardless of its' own agony. " +
+                        "It's time to put an end to it's suffering.");
                 TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
@@ -170,7 +174,8 @@ public class NPC extends Characters {
     public static void initManEater(){
         try {
             ArrayList<String> dialogue = new ArrayList<>();
-            dialogue.add("The beast flails around violently, as if tormented by an invisible force. Dust and debris fill the air. It's wild attacks seemingly have no pattern to them.");
+            dialogue.add("The beast flails around violently, as if tormented by an invisible force. " +
+                    "Dust and debris fill the air. It's wild attacks seemingly have no pattern to them.");
             dialogue.add("The beast narrows its eyes at you. It readies itself for a vicious attack!");
 
 
@@ -180,10 +185,11 @@ public class NPC extends Characters {
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/finalboss.json"));
 
             if (!wasPrinted) {
-                String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
+//                String desc = bsNode.get("description").textValue();
+//                System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("The beast howls with rage upon seeing you. Among the echo you can almost hear the trail of a faint scream that sounds strangely human.");
+                System.out.println("The beast howls with rage upon seeing you. " +
+                        "Among the echo you can almost hear the trail of a faint scream that sounds strangely human.");
                 TimeUnit.MILLISECONDS.sleep(750);
                 dialogue.remove(0);
                 wasPrinted = true;
