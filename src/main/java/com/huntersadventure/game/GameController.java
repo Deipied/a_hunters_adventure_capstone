@@ -35,10 +35,13 @@ public class GameController {
             "look", "help", "quit"));
 
     List<String> preparatoryCommands = new ArrayList<>(Arrays.asList(
-            "get", "go", "use", "talk"));
+            "get", "go", "use", "talk", "attack"));
 
     List<String> direction = new ArrayList<>(Arrays.asList(
             "north", "south", "west", "east"));
+
+//    List<String> enemyNames = ArrayList<>(Arrays.asList(
+//            "north", "south", "west", "east"));
 
     // TODO: Retrieve items from JSON file and store in a list.
     // Items in the room or from NPCs
@@ -178,7 +181,7 @@ public class GameController {
             finalboss = json.fromJson(finalBossNode, Characters.class);
 
             p1.setLocation(map.get(0));
-            miniboss1.setLocation(map.get(4));
+            miniboss1.setLocation(map.get(7));
             miniboss2.setLocation(map.get(8));
             finalboss.setLocation(map.get(9));
 
@@ -429,7 +432,7 @@ public class GameController {
                 }else if(commandTwo != "Faceless") {
                     return "That enemy is not here!";
                 }
-            }if(p1.getLocation().getName().equals("Dungeon")){
+            }if(p1.getLocation().getName().equals("Inn") && p1.getLocation() == finalboss.getLocation()){
                 if(commandTwo.equalsIgnoreCase("Man-Eater") || (commandTwo.equalsIgnoreCase("The Man-Eater"))){
                     NPC.initManEater();
                 } else if (commandTwo != "Faceless") {
@@ -594,45 +597,40 @@ public class GameController {
                 }
             }
         }
+
+        // if verb is attack
+        if (commandOne.equals("attack")) {
+            // if second word is matching and enemy's location matches yours
+            // then call combat
+            if (commandTwo.equalsIgnoreCase("Bandit") && p1.getLocation() == miniboss1.getLocation()) {
+                attackEnemy(miniboss1);
+            } else if (commandTwo.equalsIgnoreCase("Faceless") && p1.getLocation() == miniboss2.getLocation()) {
+                attackEnemy(miniboss2);
+            } else if (commandTwo.equalsIgnoreCase("man-eater") && p1.getLocation() == finalboss.getLocation()) {
+                attackEnemy(finalboss);
+            } else {
+                return "That enemy is not here!";
+            }
+        }
+
         return message;
-    }
-
-    public void miniBossEncounter(Characters boss) {
-        System.out.printf("You ran into %s and defeated them in a gruesome battle\n", boss.getName());
-    }
-
-    public void finalBossEncounter(Characters boss) {
-        System.out.printf("Finally you meet %s the final boss\n", boss.getName());
-        System.out.println("After a tough battle you return back to town to end to tell the people of the news");
-        System.out.println("Please enter ( quit ) to exit the game or continue exploring");
     }
 
     public void movePlayer(Characters player, Location location) {
         player.setLocation(location);
-        String combatResult = "";
-        if (player.getLocation() == miniboss1.getLocation()) {
-            combatResult = combat.enemyEncounter(miniboss1, player);
-        } else if (player.getLocation() == miniboss2.getLocation()) {
-            combatResult = combat.enemyEncounter(miniboss2, player);
-        } else if (player.getLocation() == finalboss.getLocation()) {
-            combatResult = combat.enemyEncounter(finalboss, player);
-        }
+    }
 
-        if (combatResult.equals("playerWin")) {
-            System.out.println("You ran into an enemy and defeated them in a gruesome battle\n");
-        } else if (combatResult.equals("enemyWin")) {
+    public void attackEnemy(Characters enemy) {
+        Characters loser = combat.enemyEncounter(enemy, p1);
+
+        if (loser != null && loser != p1) {
+            loser.setLocation(null);
+        } else if (loser == p1) {
             System.out.println("You ran into an enemy and lost\n");
             setGameEnd(true);
         }
     }
 
-    //    public void combatResolution(String winner) {
-//        if (winner.equals(p1.getName())){
-//            // player win, print souts and other calls
-//        } else {
-//            // player loss, show game over
-//        }
-//    }
 
     public int moveTo(Characters player, Direction direction) {
         Location location = player.getLocation();
@@ -689,6 +687,11 @@ public class GameController {
 
     public void gameOver() {
         System.out.println("YOU HAVE DIED");
+        setGameEnd(true);
+    }
+
+    public void gameWin() {
+        System.out.println("YOU HAVE WON THE GAME CONGRATS");
         setGameEnd(true);
     }
 
