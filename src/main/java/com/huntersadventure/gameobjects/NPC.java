@@ -130,8 +130,8 @@ public class NPC extends Characters {
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss1.json"));
 
             if (!wasPrinted) {
-                String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
+//                String desc = bsNode.get("description").textValue();
+//                System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
                 System.out.println("\"Oh, a HUNTER! I don't suppose we could let this one slide could we? " +
                         "I hear there is some worthwhile treasure around here we could split...\"");
@@ -154,8 +154,8 @@ public class NPC extends Characters {
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss2.json"));
 
             if (!wasPrinted) {
-                String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
+//                String desc = bsNode.get("description").textValue();
+//                System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
                 System.out.println("The creature raises it's great-axe, clearly willing to kill you regardless of its' own agony. " +
                         "It's time to put an end to it's suffering.");
@@ -185,8 +185,8 @@ public class NPC extends Characters {
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/finalboss.json"));
 
             if (!wasPrinted) {
-                String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
+//                String desc = bsNode.get("description").textValue();
+//                System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
                 System.out.println("The beast howls with rage upon seeing you. " +
                         "Among the echo you can almost hear the trail of a faint scream that sounds strangely human.");

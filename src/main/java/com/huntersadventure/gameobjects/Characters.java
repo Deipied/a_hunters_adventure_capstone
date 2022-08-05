@@ -9,6 +9,7 @@ public class Characters extends Prop{
     private int shield;
     private List<Item> inventory;
     private Location location;
+    private String defeat;
 
     public Characters() {
     }
@@ -30,12 +31,13 @@ public class Characters extends Prop{
     }
 
     // Enemy Constructor
-    public Characters(String name, String description, int health, int damage, int shield, Location location) {
+    public Characters(String name, String description, int health, int damage, int shield, Location location, String defeat) {
         super(name, description);
         this.health = health;
         this.damage = damage;
         this.shield = shield;
         this.location = location;
+        this.defeat = defeat;
     }
 
     public int getHealth() {
@@ -76,6 +78,14 @@ public class Characters extends Prop{
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getDefeat() {
+        return defeat;
+    }
+
+    public void setDefeat(String defeat) {
+        this.defeat = defeat;
     }
 
     @Override

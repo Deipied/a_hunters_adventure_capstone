@@ -3,5 +3,6 @@
   "health": 100,
   "damage": 10,
   "shield": 0,
-  "desc": "It seems this is the bandit the Ranger spoke of. He's not the creature you're hunting - but he's an extreme danger that needs to be eliminated nonetheless."
+  "description": "It seems this is the bandit the Ranger spoke of. He's not the creature you're hunting - but he's an extreme danger that needs to be eliminated nonetheless.",
+  "defeat": "Bandit falls lifeless to the floor, blood flowing out of his eyes slowly like magma"
 }
