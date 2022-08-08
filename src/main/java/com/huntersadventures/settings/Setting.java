@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Setting{
-    private String name;
-    private String difficulty;
+    private String name = String.valueOf(SettingType.VADER).toLowerCase();
+    private String difficulty = String.valueOf(SettingType.EASY).toLowerCase();
 
 
     public Setting() {
