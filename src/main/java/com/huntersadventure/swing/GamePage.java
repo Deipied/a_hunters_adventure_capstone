@@ -1,58 +1,66 @@
 package com.huntersadventure.swing;
 
+
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-
 
 class GamePage {
-
-    JFrame gameWindow;
+    JFrame window;
     JPanel topPanel;
-    JPanel middlePanel;
-    JPanel bottomLeftPanel;
-    JPanel bottomRightPanel;
+    JPanel dialogPanel;
+    JPanel middleLeftPanel;
+    JPanel middleRightPanel;
+    JPanel textPanel;
     Container container;
 
-    public GamePage(){
-        gameWindow = new JFrame();
-        gameWindow.setSize(1200, 900);
-        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameWindow.getContentPane().setBackground(Color.black);
-        gameWindow.setLayout(null);
-        gameWindow.setLocationRelativeTo(null);
-        gameWindow.setVisible(true);
-        container = gameWindow.getContentPane();
 
+    public GamePage(){
+        window = new JFrame();
+        window.setSize(1200, 900);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.getContentPane().setBackground(Color.black);
+        window.setLayout(null);
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+        container = window.getContentPane();
+
+        //top panel
         topPanel = new JPanel();
-        topPanel.setBounds(10, 10, 1175, 50);
+        topPanel.setBounds(10, 10, 1175, 55);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
         topPanel.setBackground(Color.black);
         container.add(topPanel);
 
-        middlePanel = new JPanel();
-        middlePanel.setBounds(10, 70, 1175, 335);
-        middlePanel.setBorder(BorderFactory.createLineBorder(Color.blue));
-        middlePanel.setBackground(Color.black);
-        container.add(middlePanel);
+        //inventory panel
+        middleLeftPanel = new JPanel();
+        middleLeftPanel.setBounds(10, 70, 577, 350);
+        middleLeftPanel.setBorder(BorderFactory.createLineBorder(Color.white));
+        middleLeftPanel.setBackground(Color.black);
+        container.add(middleLeftPanel);
 
-        bottomLeftPanel = new JPanel();
-        bottomLeftPanel.setBounds(10, 415, 725, 400);
-        bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.white));
-        bottomLeftPanel.setBackground(Color.black);
-        container.add(bottomLeftPanel);
+        //map
+        middleRightPanel = new JPanel();
+        middleRightPanel.setBounds(590, 70, 595, 350);
+        middleRightPanel.setBorder(BorderFactory.createLineBorder(Color.white));
+        middleRightPanel.setBackground(Color.black);
+        container.add(middleRightPanel);
 
-        bottomRightPanel = new JPanel();
-        bottomRightPanel.setBounds(750, 415, 432, 400);
-        bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.white));
-        bottomRightPanel.setBackground(Color.black);
-        container.add(bottomRightPanel);
+        //dialog
+        dialogPanel = new JPanel();
+        dialogPanel.setBounds(10, 425, 1175, 350);
+        dialogPanel.setBorder(BorderFactory.createLineBorder(Color.white));
+        dialogPanel.setBackground(Color.black);
+        container.add(dialogPanel);
 
+        //text panel
+        textPanel = new JPanel();
+        textPanel.setBounds(10, 780, 1175, 65);
+        textPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
+        textPanel.setBackground(Color.black);
+        container.add(textPanel);
     }
 
     public static void main(String[] args) {
         new GamePage();
     }
-
-
 }
