@@ -9,7 +9,10 @@ class GamePage {
     JPanel topPanel;
     JPanel dialogPanel;
     JPanel middleLeftPanel;
-    JPanel middleRightPanel;
+    JLabel map;
+    ImageIcon mapSrc, mapImg;
+    Image resizeMap, resizedMap;
+    JPanel mapPanel;
     JPanel textPanel;
     Container container;
 
@@ -21,7 +24,7 @@ class GamePage {
         window.getContentPane().setBackground(Color.black);
         window.setLayout(null);
         window.setLocationRelativeTo(null);
-        window.setVisible(true);
+
         container = window.getContentPane();
 
         //top panel
@@ -38,12 +41,22 @@ class GamePage {
         middleLeftPanel.setBackground(Color.black);
         container.add(middleLeftPanel);
 
+
+        //map image src
+        mapSrc = new ImageIcon("src/main/resources/GameText/map.png");
+        resizeMap = mapSrc.getImage();
+        resizedMap = resizeMap.getScaledInstance(550,330, Image.SCALE_SMOOTH);
+        mapImg = new ImageIcon(resizedMap);
+
+        map = new JLabel(mapImg);
+
         //map
-        middleRightPanel = new JPanel();
-        middleRightPanel.setBounds(590, 70, 595, 350);
-        middleRightPanel.setBorder(BorderFactory.createLineBorder(Color.white));
-        middleRightPanel.setBackground(Color.black);
-        container.add(middleRightPanel);
+        mapPanel = new JPanel();
+        mapPanel.setBounds(590, 70, 595, 350);
+        mapPanel.setBorder(BorderFactory.createLineBorder(Color.white));
+        mapPanel.setBackground(Color.black);
+        mapPanel.add(map);
+        container.add(mapPanel);
 
         //dialog
         dialogPanel = new JPanel();
@@ -57,6 +70,7 @@ class GamePage {
         textPanel.setBounds(10, 780, 1175, 65);
         textPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
         textPanel.setBackground(Color.black);
+        window.setVisible(true);
         container.add(textPanel);
     }
 
