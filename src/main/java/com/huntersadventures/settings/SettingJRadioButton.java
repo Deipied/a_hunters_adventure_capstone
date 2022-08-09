@@ -41,6 +41,7 @@ public class SettingJRadioButton extends JFrame {
                     currentDiffValue = e.getActionCommand().toLowerCase();
                     setting.setName(e.getActionCommand().toLowerCase());
                 }
+                System.out.println("Name: " + setting.getName() + " Difficulty: " + setting.getDifficulty());
             }
         };
 
