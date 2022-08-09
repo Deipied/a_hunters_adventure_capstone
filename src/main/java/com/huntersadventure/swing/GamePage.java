@@ -60,7 +60,7 @@ class GamePage {
         container.add(textPanel);
     }
 
-    public static void main(String[] args) {
-        new GamePage();
-    }
+//    public static void main(String[] args) {
+//        new GamePage();
+//    }
 }
