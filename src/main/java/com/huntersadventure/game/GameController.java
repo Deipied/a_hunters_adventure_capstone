@@ -3,6 +3,7 @@ package com.huntersadventure.game;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.huntersadventure.gameobjects.*;
 import com.huntersadventure.jsonparser.Json;
+import com.huntersadventure.swing.GamePage;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -47,10 +48,13 @@ public class GameController {
     // Items in the room or from NPCs
     List<Location> items = new ArrayList<>();
 
+    // GUI related instantiation
+    GamePage GUI = new GamePage();
+
     public GameController() throws IOException {
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, InterruptedException {
         generateItems();
         generateMap();
         createPlayer(townMap);
@@ -190,68 +194,71 @@ public class GameController {
         }
     }
 
-    public void startGame() throws IOException {
-        System.out.println("Welcome to the game!");
-        // run help() to get a list of commands
-        help();
+    public void startGame() throws IOException, InterruptedException {
+        GUI.mainText.setText("Welcome to the game!" +
+                "\ntype help to display commands available.");
         String output;
         String input;
 
         // Prompt for input until the user enters "quit". If the user enters quit, the game will exit.
         do {
-            System.out.println("Enter a command below.");
-            System.out.println(">");
-            input = in.readLine();
+//            System.out.println("Enter a command below.");
+//            System.out.println(">");
+//            input = in.readLine();
+            GUI.mainText.append("\nEnter a command below." +
+                    ">");
+            synchronized (GameController.class) {
+                GameController.class.wait();
+            }
+            input = GUI.text;
             output = runCommand(input);
-            System.out.println(output);
+            GUI.mainText.setText(output);
         } while (!gameEnd);
     }
 
-    private void help() {
-        System.out.println("Here are the basic commands:");
-        System.out.println("go [direction] - move in the specified direction");
-        System.out.println("look - Read the description of the current room, and the items available and player's status. Displays any NPCs in the area to speak to.");
-        System.out.println("get [item] - pick up the specified item");
-        System.out.println("talk [NPC name] - Attempt to talk to the specified NPC. Viable NPC names are fully capitalized in location descriptions.");
-        System.out.println("help - display commands available");
-        System.out.println("quit - exit the game and return to menu");
-        System.out.println("-----------------------------------------------------");
-        System.out.println("-----------------------------------------------------");
+    private String help() {
+        return "Here are the basic commands:"
+        + "\ngo [direction] - move in the specified direction"
+        +"\nlook - Read the description of the current room, and the items available and player's status. Displays any NPCs in the area to speak to."
+        +"\nget [item] - pick up the specified item"
+        +"\ntalk [NPC name] - Attempt to talk to the specified NPC. Viable NPC names are fully capitalized in location descriptions."
+        +"\nhelp - display commands available"
+        +"\nquit - exit the game and return to menu";
     }
 
-    public void printBanner() {
-        try {
-            Json json = new Json();
-            BufferedReader reader;
-            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/banner.txt")));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(red + line + ANSI_RESET);
-                // read next line
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void printBanner() {
+//        try {
+//            Json json = new Json();
+//            BufferedReader reader;
+//            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/banner.txt")));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                System.out.println(red + line + ANSI_RESET);
+//                // read next line
+//                line = reader.readLine();
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    public void printMap() {
-        try {
-            Json json = new Json();
-            BufferedReader reader;
-            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/gamemap.txt")));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(red + line + ANSI_RESET);
-                // read next line
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void printMap() {
+//        try {
+//            Json json = new Json();
+//            BufferedReader reader;
+//            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/gamemap.txt")));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                System.out.println(red + line + ANSI_RESET);
+//                // read next line
+//                line = reader.readLine();
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void printIntro() {
         try {
@@ -332,9 +339,10 @@ public class GameController {
         } else {
             switch (commandOne) {
                 case "help":
-                    help();
+                    message = help();
                     break;
                 case "quit":
+                    message = "QUITING GAME";
                     setGameEnd(true);
                     break;
                 case "look":
@@ -563,13 +571,13 @@ public class GameController {
                         }
 
                     } else if (commandTwo.equals("key") && p1.getLocation().getItems().contains("locker")) {
-                        System.out.println("WoW! It is an armor that can protect you from the monsters!");
+                        GUI.mainText.append("\nWoW! It is an armor that can protect you from the monsters!");
                         addShield = true;
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
-                    } else if (commandTwo.equals("map")) {
-                        printMap();
+//                    } else if (commandTwo.equals("map")) {
+//                        printMap();
 
                     } else if (commandTwo.equals("sword") || commandTwo.equals("bow")) {
                         return "You can only use the sword or the bow during combat.";
@@ -645,7 +653,7 @@ public class GameController {
                 gameWin();
             }
         } else if (loser == p1) {
-            System.out.println("You died to an enemy\n");
+            GUI.mainText.append("\nYou died to an enemy");
             gameOver();
         }
     }
@@ -680,7 +688,7 @@ public class GameController {
 
     public void movePlayerTo(Direction direction) {
         if (moveTo(p1, direction) == Direction.NOEXIT) {
-            System.out.println("No Exit");
+            GUI.mainText.append("\nNo Exit");
         }
     }
 
@@ -705,28 +713,31 @@ public class GameController {
     }
 
     public void gameOver() {
-        System.out.println("YOU HAVE DIED");
+        GUI.mainText.append("\nYOU HAVE DIED");
         setGameEnd(true);
     }
 
     public void gameWin() {
-        System.out.println("YOU HAVE WON THE GAME CONGRATS");
+        GUI.mainText.append("\nYOU HAVE WON THE GAME CONGRATS");
         setGameEnd(true);
     }
 
-    public void startPrompt() throws IOException {
+    public void startPrompt() throws IOException, InterruptedException {
         boolean keepGoing = true;
         while (keepGoing) {
-            printBanner();
-            System.out.println("Welcome to the Hunter's Adventure!");
-            System.out.println("Do you want to see the instructions? (y/n)");
-            String input = in.readLine();
+            GUI.mainText.setText("Welcome to the Hunter's Adventure!\n" +
+                    "Do you want to see the instructions? (y/n)");
+//            String input = in.readLine();
+            synchronized (GameController.class) {
+                GameController.class.wait();
+            }
+            String input = GUI.text;
             if (input.equals("y")) {
                 printIntro();
             } else if (input.equals("n")) {
                 keepGoing = false;
             } else {
-                System.out.println("Invalid input. Please try again.");
+                GUI.mainText.append("\nInvalid input. Please try again.");
             }
         }
     }
