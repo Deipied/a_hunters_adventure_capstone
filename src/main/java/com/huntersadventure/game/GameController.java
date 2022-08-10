@@ -7,6 +7,7 @@ import com.huntersadventure.jsonparser.Json;
 import com.huntersadventure.swing.CombatInventory;
 
 import com.huntersadventure.swing.GamePage;
+import com.huntersadventure.swing.SplashPage;
 
 
 import java.io.*;
@@ -54,11 +55,13 @@ public class GameController {
 
     // GUI related instantiation
     GamePage GUI = new GamePage();
+    SplashPage splashPage = new SplashPage();
 
     public GameController() throws IOException {
     }
 
     public void run() throws IOException, InterruptedException {
+        splashPage.setGUI(GUI);
         generateItems();
         generateMap();
         createPlayer(townMap);
@@ -409,7 +412,7 @@ public class GameController {
         if (commandOne.equalsIgnoreCase("talk")) {
             if (p1.getLocation().getName().equalsIgnoreCase("Blacksmith Shop")) {
                 if (commandTwo.equalsIgnoreCase("blacksmith")) {
-//                    message = NPC.initBlacksmith();
+                    message = NPC.initBlacksmith();
                 } else if (commandTwo != "blacksmith") {
                     return "That person isn't here!";
                 }
@@ -419,21 +422,21 @@ public class GameController {
             }
             if (p1.getLocation().getName().equals("Forbidden Forest")) {
                 if (commandTwo.equalsIgnoreCase("Ranger")) {
-//                  message =  NPC.initRanger();
+                  message =  NPC.initRanger();
                 } else if (commandTwo != "ranger") {
                     return "That person isn't here!";
                 }
             }
             if (p1.getLocation().getName().equals("Town Gate")) {
                 if (commandTwo.equalsIgnoreCase("guard")) {
-//                    message = NPC.initGuard();
+                    message = NPC.initGuard();
                 } else if (commandTwo != "guard") {
                     return "That person isn't here!";
                 }
             }
             if (p1.getLocation().getName().equals("Abandoned Checkpoint")) {
                 if (commandTwo.equalsIgnoreCase("Bandit") && miniboss1.getLocation() != null) {
-//                   message = NPC.initBandit();
+                   message = NPC.initBandit();
                 } else {
                     return "That enemy isn't here!";
                 }
@@ -449,14 +452,14 @@ public class GameController {
             }
             if (p1.getLocation().getName().equals("Dungeon Entrance")) {
                 if (commandTwo.equalsIgnoreCase("Faceless") && miniboss2.getLocation() != null) {
-//                    message = NPC.initFaceless();
+                    message = NPC.initFaceless();
                 } else {
                     return "That enemy is not here!";
                 }
             }
             if (p1.getLocation().getName().equals("Dungeon")) {
                 if (commandTwo.equalsIgnoreCase("Man-Eater") && finalboss.getLocation() != null) {
-//                    message = NPC.initManEater();
+                    message = NPC.initManEater();
                 } else {
                     return "That enemy is not here!";
                 }
@@ -651,7 +654,7 @@ public class GameController {
     }
 
     public void attackEnemy(Characters enemy) {
-        Characters loser = combat.enemyEncounter(enemy, p1);
+        Characters loser = combat.enemyEncounter(enemy, p1, GUI);
 
         if (loser != null && loser != p1) {
             loser.setLocation(null);
