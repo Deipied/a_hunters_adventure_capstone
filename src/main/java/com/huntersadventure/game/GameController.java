@@ -625,7 +625,6 @@ public class GameController {
             // then call combat
             if(commandTwo.equalsIgnoreCase("Inventory") && (p1.getLocation() == miniboss1.getLocation() || p1.getLocation() == miniboss2.getLocation() || p1.getLocation() == finalboss.getLocation())){
                 CombatInventory.testCombatInventory(p1);
-                System.out.println("Inventory attack ........................");
             }
             if (commandTwo.equalsIgnoreCase("Bandit") && p1.getLocation() == miniboss1.getLocation()) {
                 attackEnemy(miniboss1);
