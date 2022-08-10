@@ -12,7 +12,7 @@ public class CombatInventory {
 
         DefaultListModel<String> panelList = new DefaultListModel<>();
 
-        GUI.middleLeftPanel.removeAll();
+        GUI.inventoryPanel.removeAll();
         JList<String> displayList = new JList<>(panelList);
         for (Item item : p1.getInventory()
         ) {
@@ -21,8 +21,8 @@ public class CombatInventory {
 
         displayList.setBounds(100, 100, 200, 200);
 
-        GUI.middleLeftPanel.setFont(new java.awt.Font("Tacoma", 0, 44));
-        GUI.middleLeftPanel.add(displayList);
+        GUI.inventoryPanel.setFont(new java.awt.Font("Tacoma", 0, 44));
+        GUI.inventoryPanel.add(displayList);
 
     }
 

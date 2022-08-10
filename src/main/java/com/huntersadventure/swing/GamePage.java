@@ -10,14 +10,10 @@ import java.awt.event.ActionListener;
 
 public class GamePage {
     JFrame window;
-    JPanel topPanel;
-    JPanel dialogPanel;
-    JPanel middleLeftPanel;
+    JPanel topPanel, inventoryPanel, dialogPanel, mapPanel, textPanel;
     JLabel map;
     ImageIcon mapSrc, mapImg;
     Image resizeMap, resizedMap;
-    JPanel mapPanel;
-    JPanel textPanel;
     Container container;
 
     // work with dialogue and text panel
@@ -25,7 +21,6 @@ public class GamePage {
     Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
     public JTextArea mainText;
     JTextField test = new JTextField(20);
-
 
     public GamePage(){
         window = new JFrame();
@@ -45,19 +40,17 @@ public class GamePage {
         container.add(topPanel);
 
         //inventory panel
-        middleLeftPanel = new JPanel();
-        middleLeftPanel.setBounds(10, 70, 577, 350);
-        middleLeftPanel.setBorder(BorderFactory.createLineBorder(Color.white));
-        middleLeftPanel.setBackground(Color.black);
-        container.add(middleLeftPanel);
-
+        inventoryPanel = new JPanel();
+        inventoryPanel.setBounds(10, 70, 577, 350);
+        inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
+        inventoryPanel.setBackground(Color.black);
+        container.add(inventoryPanel);
 
         //map image src
         mapSrc = new ImageIcon("src/main/resources/GameText/map.png");
         resizeMap = mapSrc.getImage();
         resizedMap = resizeMap.getScaledInstance(550,330, Image.SCALE_SMOOTH);
         mapImg = new ImageIcon(resizedMap);
-
         map = new JLabel(mapImg);
 
         //map
