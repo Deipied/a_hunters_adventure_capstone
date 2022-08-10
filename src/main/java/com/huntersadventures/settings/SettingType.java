@@ -2,7 +2,7 @@ package com.huntersadventures.settings;
 
 import java.awt.*;
 
-enum SettingType {
+public enum SettingType {
     DIFFICULTY("Difficulty"),
     CHARACTER("Character"),
     EASY("easy"),

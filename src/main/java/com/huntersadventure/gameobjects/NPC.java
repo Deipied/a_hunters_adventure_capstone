@@ -16,9 +16,9 @@ public class NPC extends Characters {
 
     static Random r = new Random();
     private static boolean wasPrinted = false;
+    static String message;
 
-
-    public static void initBlacksmith() {
+    public static String initBlacksmith() {
         try {
             ArrayList<String> dialogue = new ArrayList<>();
             dialogue.add("\"What is it?\"");
@@ -33,23 +33,23 @@ public class NPC extends Characters {
 
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("\"Due to the recent string of attacks, my sales have gone up tremendously. Unfortunately for you, all I have are these " + cyan + "arrows" + ANSI_RESET + " for now.\"");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = desc + "\nDue to the recent string of attacks, my sales have gone up tremendously. Unfortunately for you, all I have are these arrows for now.";
+//                TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("The blacksmith strikes his anvil once again.\n" + randomElement);
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = "The blacksmith strikes his anvil once again.\n" + randomElement;
+//                TimeUnit.MILLISECONDS.sleep(750);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return message;
     }
 
 
-    public static void initGuard() {
+    public static String initGuard() {
         try {
             ArrayList<String> dialogue = new ArrayList<>();
             dialogue.add("\"If you keep loitering here I'll make sure to have you arrested.\"");
@@ -65,23 +65,23 @@ public class NPC extends Characters {
 
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("Nobody gets in or out of here without a " + cyan + "Badge" + ANSI_RESET +" Hunter. YOUR kind included.\"" + "he growls.");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = desc + "\nNobody gets in or out of here without a Badge Hunter. YOUR kind included." + "\nhe growls.";
+//                TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("The guard scowls. \n" + randomElement);
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = "The guard scowls. \n" + randomElement;
+//                TimeUnit.MILLISECONDS.sleep(750);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return message;
     }
 
 
-    public static void initRanger() {
+    public static String initRanger() {
         try {
             ArrayList<String> dialogue = new ArrayList<>();
             dialogue.add("\"It sickens me what's happened here. If only we got here sooner...\"");
@@ -97,25 +97,24 @@ public class NPC extends Characters {
 
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
-                System.out.println(desc);
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("\"Ahh a Hunter! Perfect timing. We're stretched thin while we investigate this attack, " +
-                        "but there's an  " + yellow + "Abandoned Checkpoint" + ANSI_RESET +
-                        "\nwe need to retake down the way on the other path from a local bandit. Perhaps you can help us out?\"" + "he asks.");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = desc + "\"Ahh a Hunter! Perfect timing. We're stretched thin while we investigate this attack, " +
+                        "but there's an Abandoned Checkpoint we need to retake down the way on the other path from a local bandit. Perhaps you can help us out?" + "\nhe asks.";
+//                TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println(randomElement);
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = randomElement;
+//                TimeUnit.MILLISECONDS.sleep(750);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return message;
     }
 
 
-    public static void initBandit(){
+    public static String initBandit(){
         try {
             ArrayList<String> dialogue = new ArrayList<>();
             dialogue.add("\"I've always wondered how much coin your lot carries around on you. I guess I'll have to kill you to find out for myself!\"" + "The bandit cackles.");
@@ -132,23 +131,24 @@ public class NPC extends Characters {
             if (!wasPrinted) {
 //                String desc = bsNode.get("description").textValue();
 //                System.out.println(desc);
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("\"Oh, a HUNTER! I don't suppose we could let this one slide could we? " +
-                        "I hear there is some worthwhile treasure around here we could split...\"");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = "\nOh, a HUNTER! I don't suppose we could let this one slide could we? " +
+                        "\nI hear there is some worthwhile treasure around here we could split...";
+//                TimeUnit.MILLISECONDS.sleep(750);
                 dialogue.remove(0);
                 wasPrinted = true;
             } else {
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println(randomElement);
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = randomElement;
+//                TimeUnit.MILLISECONDS.sleep(750);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return message;
     }
 
-    public static void initFaceless(){
+    public static String initFaceless(){
         try {
             Json json = new Json();
             JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss2.json"));
@@ -156,22 +156,23 @@ public class NPC extends Characters {
             if (!wasPrinted) {
 //                String desc = bsNode.get("description").textValue();
 //                System.out.println(desc);
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("The creature raises it's great-axe, clearly willing to kill you regardless of its' own agony. " +
-                        "It's time to put an end to it's suffering.");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = "The creature raises it's great-axe, clearly willing to kill you regardless of its' own agony. " +
+                        "\nIt's time to put an end to it's suffering.";
+//                TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("There is no use trying to speak to it. It cannot respond.");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = "There is no use trying to speak to it. It cannot respond.";
+//                TimeUnit.MILLISECONDS.sleep(750);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return message;
     }
 
-    public static void initManEater(){
+    public static String initManEater(){
         try {
             ArrayList<String> dialogue = new ArrayList<>();
             dialogue.add("The beast flails around violently, as if tormented by an invisible force. " +
@@ -187,30 +188,20 @@ public class NPC extends Characters {
             if (!wasPrinted) {
 //                String desc = bsNode.get("description").textValue();
 //                System.out.println(desc);
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("The beast howls with rage upon seeing you. " +
-                        "Among the echo you can almost hear the trail of a faint scream that sounds strangely human.");
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = "The beast howls with rage upon seeing you. " +
+                        "\nAmong the echo you can almost hear the trail of a faint scream that sounds strangely human.";
+//                TimeUnit.MILLISECONDS.sleep(750);
                 dialogue.remove(0);
                 wasPrinted = true;
             } else {
-                TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println(randomElement);
-                TimeUnit.MILLISECONDS.sleep(750);
+//                TimeUnit.MILLISECONDS.sleep(500);
+                message = randomElement;
+//                TimeUnit.MILLISECONDS.sleep(750);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return message;
     }
 }
-
-
-
-
-
-
-
-
-
-
-

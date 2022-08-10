@@ -4,6 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.huntersadventure.gameobjects.*;
 import com.huntersadventure.jsonparser.Json;
 
+import com.huntersadventure.swing.CombatInventory;
+
+import com.huntersadventure.swing.GamePage;
+import com.huntersadventure.swing.SplashPage;
+
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,10 +21,10 @@ import java.util.Objects;
  */
 
 public class GameController {
-    public static final String ANSI_RESET = "\u001B[0m";  //resets text color back to default value.
-    public static final String cyan = "\033[1;36m";
-    public static final String yellow = "\033[1;33m";
-    public static final String red = "\033[1;31m";
+//    public static final String ANSI_RESET = "\u001B[0m";  //resets text color back to default value.
+//    public static final String cyan = "\033[1;36m";
+//    public static final String yellow = "\033[1;33m";
+//    public static final String red = "\033[1;31m";
     boolean gameEnd = true;
 
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -47,10 +53,15 @@ public class GameController {
     // Items in the room or from NPCs
     List<Location> items = new ArrayList<>();
 
+    // GUI related instantiation
+    GamePage GUI = new GamePage();
+    SplashPage splashPage = new SplashPage();
+
     public GameController() throws IOException {
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, InterruptedException {
+        splashPage.setGUI(GUI);
         generateItems();
         generateMap();
         createPlayer(townMap);
@@ -190,68 +201,71 @@ public class GameController {
         }
     }
 
-    public void startGame() throws IOException {
-        System.out.println("Welcome to the game!");
-        // run help() to get a list of commands
-        help();
+    public void startGame() throws IOException, InterruptedException {
+        GUI.mainText.setText("Welcome to the game!" +
+                "\ntype help to display commands available.");
         String output;
         String input;
 
         // Prompt for input until the user enters "quit". If the user enters quit, the game will exit.
         do {
-            System.out.println("Enter a command below.");
-            System.out.println(">");
-            input = in.readLine();
+//            System.out.println("Enter a command below.");
+//            System.out.println(">");
+//            input = in.readLine();
+            GUI.mainText.append("\nEnter a command below." +
+                    ">");
+            synchronized (GameController.class) {
+                GameController.class.wait();
+            }
+            input = GUI.text;
             output = runCommand(input);
-            System.out.println(output);
+            GUI.mainText.setText(output);
         } while (!gameEnd);
     }
 
-    private void help() {
-        System.out.println("Here are the basic commands:");
-        System.out.println("go [direction] - move in the specified direction");
-        System.out.println("look - Read the description of the current room, and the items available and player's status. Displays any NPCs in the area to speak to.");
-        System.out.println("get [item] - pick up the specified item");
-        System.out.println("talk [NPC name] - Attempt to talk to the specified NPC. Viable NPC names are fully capitalized in location descriptions.");
-        System.out.println("help - display commands available");
-        System.out.println("quit - exit the game and return to menu");
-        System.out.println("-----------------------------------------------------");
-        System.out.println("-----------------------------------------------------");
+    private String help() {
+        return "Here are the basic commands:"
+        + "\ngo [direction] - move in the specified direction"
+        +"\nlook - Read the description of the current room, and the items available and player's status. Displays any NPCs in the area to speak to."
+        +"\nget [item] - pick up the specified item"
+        +"\ntalk [NPC name] - Attempt to talk to the specified NPC. Viable NPC names are fully capitalized in location descriptions."
+        +"\nhelp - display commands available"
+        +"\nquit - exit the game and return to menu";
     }
 
-    public void printBanner(){
-        try {
-            Json json = new Json();
-            BufferedReader reader;
-            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/banner.txt")));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(red + line + ANSI_RESET);
-                // read next line
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void printBanner() {
+//        try {
+//            Json json = new Json();
+//            BufferedReader reader;
+//            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/banner.txt")));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                System.out.println(red + line + ANSI_RESET);
+//                // read next line
+//                line = reader.readLine();
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    public void printMap(){
-        try {
-            Json json = new Json();
-            BufferedReader reader;
-            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/gamemap.txt")));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(red + line + ANSI_RESET);
-                // read next line
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void printMap() {
+//        try {
+//            Json json = new Json();
+//            BufferedReader reader;
+//            reader = new BufferedReader(new InputStreamReader(json.getResourceStream("/GameText/gamemap.txt")));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                System.out.println(red + line + ANSI_RESET);
+//                // read next line
+//                line = reader.readLine();
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void printIntro() {
         try {
@@ -298,9 +312,9 @@ public class GameController {
      */
     private String parseCommand(List<String> wordlist) throws IOException {
         String message;
-        if (wordlist.size () == 1) {
+        if (wordlist.size() == 1) {
             message = processSingleCommand(wordlist);
-        } else if (wordlist .size () == 2) {
+        } else if (wordlist.size() == 2) {
             if (wordlist.get(0).equals("grab") || wordlist.get(0).equals("take")) {
                 wordlist.set(0, "get");
             }
@@ -308,7 +322,7 @@ public class GameController {
         } else if (wordlist.size() == 3) {
             if (wordlist.get(0).equals("pick") && wordlist.get(1).equals("up")) {
                 wordlist.set(1, wordlist.get(2));
-            } else if ((wordlist.get(0).equals("talk") && wordlist.get(1).equals("to"))){
+            } else if ((wordlist.get(0).equals("talk") && wordlist.get(1).equals("to"))) {
                 wordlist.set(1, wordlist.get(2));
             }
             message = processTwoCommand(wordlist);
@@ -332,9 +346,10 @@ public class GameController {
         } else {
             switch (commandOne) {
                 case "help":
-                    help();
+                    message = help();
                     break;
                 case "quit":
+                    message = "QUITING GAME";
                     setGameEnd(true);
                     break;
                 case "look":
@@ -355,11 +370,11 @@ public class GameController {
                     }
 
                     message =
-                            "You are in the " + yellow + p1.getLocation().getName() + ANSI_RESET +"\n" + p1.getLocation().getDescription() + "\n" +
-                            "Items available in the room: " + cyan + p1.getLocation().getItems() + ANSI_RESET + "\n" +
-                            "Player's current health: " + p1.getHealth() + "\n" +
-                            "Player's current shield: " + p1.getShield() + "\n" +
-                            "Player's current inventory is: \n" + inventory ;
+                            "You are in the " + p1.getLocation().getName() + "\n" + p1.getLocation().getDescription() + "\n" +
+                                    "Items available in the room: "  + p1.getLocation().getItems()  + "\n" +
+                                    "Player's current health: " + p1.getHealth() + "\n" +
+                                    "Player's current shield: " + p1.getShield() + "\n" +
+                                    "Player's current inventory is: \n" + inventory;
 
                     break;
 
@@ -376,6 +391,7 @@ public class GameController {
      * and checks String 0 and 1 for prep command and location
      */
     private String processTwoCommand(List<String> wordlist) {
+
         String commandOne;
         String commandTwo;
 
@@ -394,47 +410,56 @@ public class GameController {
         }
 
         if (commandOne.equalsIgnoreCase("talk")) {
-            if(p1.getLocation().getName().equalsIgnoreCase("Blacksmith Shop")){
-                if(commandTwo.equalsIgnoreCase("blacksmith")) {
-                    NPC.initBlacksmith();
+            if (p1.getLocation().getName().equalsIgnoreCase("Blacksmith Shop")) {
+                if (commandTwo.equalsIgnoreCase("blacksmith")) {
+                    message = NPC.initBlacksmith();
                 } else if (commandTwo != "blacksmith") {
                     return "That person isn't here!";
                 }
-            }if(p1.getLocation().getName().equals("Guard Tower")){
+            }
+            if (p1.getLocation().getName().equals("Guard Tower")) {
                 return "There is nobody here!";
-            }if(p1.getLocation().getName().equals("Forbidden Forest")){
-                if(commandTwo.equalsIgnoreCase("Ranger")) {
-                    NPC.initRanger();
+            }
+            if (p1.getLocation().getName().equals("Forbidden Forest")) {
+                if (commandTwo.equalsIgnoreCase("Ranger")) {
+                  message =  NPC.initRanger();
                 } else if (commandTwo != "ranger") {
                     return "That person isn't here!";
                 }
-            }if(p1.getLocation().getName().equals("Town Gate")){
-                if(commandTwo.equalsIgnoreCase("guard")){
-                    NPC.initGuard();
+            }
+            if (p1.getLocation().getName().equals("Town Gate")) {
+                if (commandTwo.equalsIgnoreCase("guard")) {
+                    message = NPC.initGuard();
                 } else if (commandTwo != "guard") {
                     return "That person isn't here!";
                 }
-            }if(p1.getLocation().getName().equals("Abandoned Checkpoint")){
-                if(commandTwo.equalsIgnoreCase("Bandit") && miniboss1.getLocation() != null){
-                    NPC.initBandit();
+            }
+            if (p1.getLocation().getName().equals("Abandoned Checkpoint")) {
+                if (commandTwo.equalsIgnoreCase("Bandit") && miniboss1.getLocation() != null) {
+                   message = NPC.initBandit();
                 } else {
                     return "That enemy isn't here!";
                 }
-            }if(p1.getLocation().getName().equals("Farmland")){
+            }
+            if (p1.getLocation().getName().equals("Farmland")) {
                 return "There are no people in the Farmlands!";
-            }if(p1.getLocation().getName().equals("Abandoned House")){
+            }
+            if (p1.getLocation().getName().equals("Abandoned House")) {
                 return "There is nobody left in this house. It's been abandoned for some time.";
-            }if(p1.getLocation().getName().equals("Inn")){
+            }
+            if (p1.getLocation().getName().equals("Inn")) {
                 return "The Inn is empty. There haven't been travelers in the town lately.";
-            }if(p1.getLocation().getName().equals("Dungeon Entrance")){
-                if(commandTwo.equalsIgnoreCase("Faceless") && miniboss2.getLocation() != null){
-                    NPC.initFaceless();
-                }else {
+            }
+            if (p1.getLocation().getName().equals("Dungeon Entrance")) {
+                if (commandTwo.equalsIgnoreCase("Faceless") && miniboss2.getLocation() != null) {
+                    message = NPC.initFaceless();
+                } else {
                     return "That enemy is not here!";
                 }
-            }if(p1.getLocation().getName().equals("Dungeon")){
-                if(commandTwo.equalsIgnoreCase("Man-Eater") && finalboss.getLocation() != null){
-                    NPC.initManEater();
+            }
+            if (p1.getLocation().getName().equals("Dungeon")) {
+                if (commandTwo.equalsIgnoreCase("Man-Eater") && finalboss.getLocation() != null) {
+                    message = NPC.initManEater();
                 } else {
                     return "That enemy is not here!";
                 }
@@ -452,7 +477,7 @@ public class GameController {
             switch (commandTwo) {
                 case "north":
                     goNorth();
-                    message = "Your current location is the " + yellow + p1.getLocation().getName() + ANSI_RESET
+                    message = "Your current location is the " + p1.getLocation().getName()
                             + ".\n";
                     break;
 
@@ -462,7 +487,7 @@ public class GameController {
                                 "Help the Ranger to defeat the Bandit and gain their trust.";
                     } else {
                         goSouth();
-                        message = "Your current location is the " + yellow + p1.getLocation().getName() + ANSI_RESET
+                        message = "Your current location is the " + p1.getLocation().getName()
                                 + ".\n";
                     }
                     break;
@@ -472,7 +497,7 @@ public class GameController {
                         message = "The guardsman asks you to display the badge to exit the town gate. \n";
                     } else {
                         goWest();
-                        message = "Your current location is the " + yellow + p1.getLocation().getName() + ANSI_RESET
+                        message = "Your current location is the " + p1.getLocation().getName()
                                 + ".\n";
                     }
                     break;
@@ -482,7 +507,7 @@ public class GameController {
                         message = "The guardsman asks you to display the badge to exit the town gate. \n";
                     } else {
                         goEast();
-                        message = "Your current location is the " + yellow + p1.getLocation().getName() + ANSI_RESET
+                        message = "Your current location is the " + p1.getLocation().getName()
                                 + ".\n";
                     }
                     break;
@@ -494,7 +519,6 @@ public class GameController {
         }
 
         if (commandOne.equals("get")) {
-
             boolean hasNoBow = p1.getInventory().stream().noneMatch((i -> i.getName().equals("bow")));
 
             if (commandTwo.equals("locker") && p1.getLocation().getItems().contains("locker")) {
@@ -505,11 +529,18 @@ public class GameController {
 
             } else if (itemInRoomItems) {
                 if (itemInGameItems) {
-                    p1.getInventory().add(gameItems.stream()
-                            .filter(i -> i.getName().equals(commandTwo))
-                            .findFirst().orElse(null));
-                    p1.getLocation().getItems().remove(commandTwo);
-                    return "You pick up the " + cyan + commandTwo + ANSI_RESET +".";
+                    if (commandTwo.equals("key") && miniboss1.getLocation() != null) {
+                        return "Bandit guards the key, you must kill him first";
+                    } else if (commandTwo.equals("necklace") && miniboss1.getLocation() != null) {
+                        return "You must defeat the Bandit first.";
+                    } else {
+                        p1.getInventory().add(gameItems.stream()
+                                .filter(i -> i.getName().equals(commandTwo))
+                                .findFirst().orElse(null));
+                        p1.getLocation().getItems().remove(commandTwo);
+                        CombatInventory.testCombatInventory(GUI, p1);
+                        return "You pick up the "  + commandTwo  + ".";
+                    }
                 }
             } else {
                 message = "There is no " + commandTwo + " here.";
@@ -522,15 +553,16 @@ public class GameController {
             } else {
                 if (itemInInventory) {
                     if (commandTwo.equals("potion")) {
-                        p1.setHealth(p1.getHealth() + Objects.requireNonNull(p1.getInventory().stream()
-                                .filter(i -> i.getName().equals(commandTwo))
-                                .findFirst().orElse(null)).getValue());
+//                        p1.setHealth(p1.getHealth() + Objects.requireNonNull(p1.getInventory().stream()
+//                                .filter(i -> i.getName().equals(commandTwo))
+//                                .findFirst().orElse(null)).getValue());
+                        p1.setHealth(100);
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
 
-                        return "You use the potion and gain "  + cyan + "50"
-                                + ANSI_RESET + " health.";
+                        return "You use the potion and gain " + "FULL"
+                                 + " health.";
 
                     } else if (commandTwo.equals("arrows")) {
                         for (Item bow : p1.getInventory()) {
@@ -547,13 +579,13 @@ public class GameController {
                         }
 
                     } else if (commandTwo.equals("key") && p1.getLocation().getItems().contains("locker")) {
-                        System.out.println("WoW! It is an armor that can protect you from the monsters!");
+                        GUI.mainText.append("\nWoW! It is an armor that can protect you from the monsters!");
                         addShield = true;
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
-                    } else if (commandTwo.equals("map")) {
-                        printMap();
+//                    } else if (commandTwo.equals("map")) {
+//                        printMap();
 
                     } else if (commandTwo.equals("sword") || commandTwo.equals("bow")) {
                         return "You can only use the sword or the bow during combat.";
@@ -566,8 +598,8 @@ public class GameController {
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
 
-                        return "You just equipped a body armor with " + cyan + "50"
-                                + ANSI_RESET + " shield protection.";
+                        return "You just equipped a body armor with " + "50"
+                                 + " shield protection.";
 
                     } else {
                         return "You cannot use that item.";
@@ -602,6 +634,7 @@ public class GameController {
         if (commandOne.equals("attack")) {
             // if second word is matching and enemy's location matches yours
             // then call combat
+
             if (commandTwo.equalsIgnoreCase("Bandit") && p1.getLocation() == miniboss1.getLocation()) {
                 attackEnemy(miniboss1);
             } else if (commandTwo.equalsIgnoreCase("Faceless") && p1.getLocation() == miniboss2.getLocation()) {
@@ -621,7 +654,7 @@ public class GameController {
     }
 
     public void attackEnemy(Characters enemy) {
-        Characters loser = combat.enemyEncounter(enemy, p1);
+        Characters loser = combat.enemyEncounter(enemy, p1, GUI);
 
         if (loser != null && loser != p1) {
             loser.setLocation(null);
@@ -629,7 +662,7 @@ public class GameController {
                 gameWin();
             }
         } else if (loser == p1) {
-            System.out.println("You died to an enemy\n");
+            GUI.mainText.append("\nYou died to an enemy");
             gameOver();
         }
     }
@@ -663,8 +696,8 @@ public class GameController {
     }
 
     public void movePlayerTo(Direction direction) {
-        if (moveTo(p1,direction) == Direction.NOEXIT) {
-            System.out.println("No Exit");
+        if (moveTo(p1, direction) == Direction.NOEXIT) {
+            GUI.mainText.append("\nNo Exit");
         }
     }
 
@@ -689,28 +722,32 @@ public class GameController {
     }
 
     public void gameOver() {
-        System.out.println("YOU HAVE DIED");
+        GUI.mainText.append("\nYOU HAVE DIED");
         setGameEnd(true);
     }
 
     public void gameWin() {
-        System.out.println("YOU HAVE WON THE GAME CONGRATS");
+        GUI.mainText.append("\nYOU HAVE WON THE GAME CONGRATS");
         setGameEnd(true);
     }
 
-    public void startPrompt() throws IOException {
+    public void startPrompt() throws IOException, InterruptedException {
+
         boolean keepGoing = true;
         while (keepGoing) {
-            printBanner();
-            System.out.println("Welcome to the Hunter's Adventure!");
-            System.out.println("Do you want to see the instructions? (y/n)");
-            String input = in.readLine();
+            GUI.mainText.setText("Welcome to the Hunter's Adventure!\n" +
+                    "Do you want to see the instructions? (y/n)");
+//            String input = in.readLine();
+            synchronized (GameController.class) {
+                GameController.class.wait();
+            }
+            String input = GUI.text;
             if (input.equals("y")) {
                 printIntro();
             } else if (input.equals("n")) {
                 keepGoing = false;
             } else {
-                System.out.println("Invalid input. Please try again.");
+                GUI.mainText.append("\nInvalid input. Please try again.");
             }
         }
     }

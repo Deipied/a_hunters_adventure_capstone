@@ -1,5 +1,5 @@
 {
   "name": "potion",
-  "description": "Drink it and get full health",
-  "value": 50
+  "description": "Drink it and get full health outside combat",
+  "value": 100
 }

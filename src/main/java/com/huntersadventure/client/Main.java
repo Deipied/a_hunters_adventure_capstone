@@ -1,6 +1,7 @@
 package com.huntersadventure.client;
 
 import com.huntersadventure.game.GameController;
+import com.huntersadventure.swing.SplashPage;
 
 import java.io.IOException;
 
@@ -13,6 +14,8 @@ public class Main {
             gameController.run();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
