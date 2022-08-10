@@ -27,9 +27,9 @@ public class CombatInventory {
         displayList.setBounds(100, 100, 200, 200);
 
 
-        gamePage.middleLeftPanel.setFont(new java.awt.Font("Tacoma", 0, 44));
-        gamePage.middleLeftPanel.add(displayList);
-        gamePage.middleLeftPanel.setBackground(Color.white);
+        gamePage.inventoryPanel.setFont(new Font("Tacoma", 0, 44));
+        gamePage.inventoryPanel.add(displayList);
+        gamePage.inventoryPanel.setBackground(Color.white);
 //        Container contentPane = frame.getContentPane();
 //        contentPane.add(scrollPane, BorderLayout.CENTER);
 //
