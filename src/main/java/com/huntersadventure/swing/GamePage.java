@@ -1,10 +1,14 @@
 package com.huntersadventure.swing;
 
 
+import com.huntersadventure.game.GameController;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class GamePage {
+public class GamePage {
     JFrame window;
     JPanel topPanel;
     JPanel dialogPanel;
@@ -15,6 +19,12 @@ class GamePage {
     JPanel mapPanel;
     JPanel textPanel;
     Container container;
+
+    // work with dialogue and text panel
+    public String text = "";
+    Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
+    public JTextArea mainText;
+    JTextField test = new JTextField(20);
 
 
     public GamePage(){
@@ -65,6 +75,17 @@ class GamePage {
         dialogPanel.setBackground(Color.black);
         container.add(dialogPanel);
 
+        mainText = new JTextArea("Default text");
+        mainText.setBounds(20, 500, 1000, 250);
+        mainText.setBackground(Color.black);
+        mainText.setForeground(Color.white);
+        mainText.setFont(normalFont);
+        mainText.setLineWrap(true);
+        mainText.setWrapStyleWord(true);
+        mainText.setEditable(false);
+
+        dialogPanel.add(mainText);
+
         //text panel
         textPanel = new JPanel();
         textPanel.setBounds(10, 780, 1175, 65);
@@ -72,6 +93,21 @@ class GamePage {
         textPanel.setBackground(Color.black);
         window.setVisible(true);
         container.add(textPanel);
+
+        textPanel.add(test, "left");
+
+        // action listener and threading for player input
+        test.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                text = test.getText();
+                test.setText("");
+
+                synchronized (GameController.class) {
+                    GameController.class.notifyAll();
+                }
+            }
+        });
     }
 
 //    public static void main(String[] args) {
