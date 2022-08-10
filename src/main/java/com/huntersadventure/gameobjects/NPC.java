@@ -35,7 +35,7 @@ public class NPC extends Characters {
                 String desc = bsNode.get("desc").textValue();
                 System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("\"Due to the recent string of attacks, my sales have gone up tremendously. Unfortunately for you, all I have are these " + cyan + "arrows" + ANSI_RESET + " for now.\"");
+                System.out.println("\"Due to the recent string of attacks, my sales have gone up tremendously. Unfortunately for you, all I have are these "  + "arrows"  + " for now.\"");
                 TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
@@ -67,7 +67,7 @@ public class NPC extends Characters {
                 String desc = bsNode.get("desc").textValue();
                 System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
-                System.out.println("Nobody gets in or out of here without a " + cyan + "Badge" + ANSI_RESET +" Hunter. YOUR kind included.\"" + "he growls.");
+                System.out.println("Nobody gets in or out of here without a "  + "Badge"  +" Hunter. YOUR kind included.\"" + "he growls.");
                 TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {
@@ -100,7 +100,7 @@ public class NPC extends Characters {
                 System.out.println(desc);
                 TimeUnit.MILLISECONDS.sleep(500);
                 System.out.println("\"Ahh a Hunter! Perfect timing. We're stretched thin while we investigate this attack, " +
-                        "but there's an  " + yellow + "Abandoned Checkpoint" + ANSI_RESET +
+                        "but there's an  " + "Abandoned Checkpoint" +
                         "\nwe need to retake down the way on the other path from a local bandit. Perhaps you can help us out?\"" + "he asks.");
                 TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;

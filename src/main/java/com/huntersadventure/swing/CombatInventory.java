@@ -7,34 +7,23 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CombatInventory {
-    static JFrame frame;
 
-    public static void testCombatInventory(Characters p1) {
-        GamePage gamePage = new GamePage();
-        frame = new JFrame("Current inventory");
+    public static void testCombatInventory(GamePage GUI, Characters p1) {
+
         DefaultListModel<String> panelList = new DefaultListModel<>();
-        frame.setAlwaysOnTop(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        GUI.inventoryPanel.removeAll();
+        JList<String> displayList = new JList<>(panelList);
         for (Item item : p1.getInventory()
         ) {
             panelList.addElement(item.getName());
         }
 
-        JList<String> displayList = new JList<>(panelList);
-//        JScrollPane scrollPane = new JScrollPane(displayList);
-
         displayList.setBounds(100, 100, 200, 200);
 
+        GUI.inventoryPanel.setFont(new java.awt.Font("Tacoma", 0, 44));
+        GUI.inventoryPanel.add(displayList);
 
-        gamePage.inventoryPanel.setFont(new Font("Tacoma", 0, 44));
-        gamePage.inventoryPanel.add(displayList);
-        gamePage.inventoryPanel.setBackground(Color.white);
-//        Container contentPane = frame.getContentPane();
-//        contentPane.add(scrollPane, BorderLayout.CENTER);
-//
-//        frame.setSize(200, 200);
-//        frame.setVisible(true);
     }
 
 }
