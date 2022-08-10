@@ -1,6 +1,7 @@
 package com.huntersadventure.client;
 
 import com.huntersadventure.game.GameController;
+import com.huntersadventure.swing.SplashPage;
 
 import java.io.IOException;
 

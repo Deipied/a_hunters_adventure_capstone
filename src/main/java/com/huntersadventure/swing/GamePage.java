@@ -1,6 +1,7 @@
 package com.huntersadventure.swing;
 
 
+import com.huntersadventure.game.Combat;
 import com.huntersadventure.game.GameController;
 
 import javax.swing.*;
@@ -68,7 +69,7 @@ public class GamePage {
         dialogPanel.setBackground(Color.black);
         container.add(dialogPanel);
 
-        mainText = new JTextArea("Default text");
+        mainText = new JTextArea("Type a command below. >");
         mainText.setBounds(20, 500, 1000, 250);
         mainText.setBackground(Color.black);
         mainText.setForeground(Color.white);
@@ -98,6 +99,10 @@ public class GamePage {
 
                 synchronized (GameController.class) {
                     GameController.class.notifyAll();
+                }
+
+                synchronized (Combat.class) {
+                    Combat.class.notifyAll();
                 }
             }
         });

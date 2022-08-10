@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
-class SplashPage {
+public class SplashPage {
 
     JFrame titleWindow;
     JPanel titlePanel, startButtonPanel;
@@ -20,6 +20,16 @@ class SplashPage {
     ImageIcon titleBannerSrc, finalImage;
     Image resizeImage, resizedImage;
     Container container;
+
+    GamePage GUI;
+
+    public GamePage getGUI() {
+        return GUI;
+    }
+
+    public void setGUI(GamePage GUI) {
+        this.GUI = GUI;
+    }
 
     public SplashPage() {
         //JFrame window
@@ -83,9 +93,11 @@ class SplashPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 titleWindow.setVisible(false);
-                new GamePage();
+                getGUI();
             }
         });
+
+
     }
 
     public static void main(String[] args) throws IOException {
