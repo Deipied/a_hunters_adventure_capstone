@@ -12,6 +12,7 @@ public class SettingJRadioButton extends JFrame {
     public SettingJRadioButton(Setting setting) {
 
         JFrame frame = new JFrame("Settings");
+        frame.setAlwaysOnTop(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -41,6 +42,7 @@ public class SettingJRadioButton extends JFrame {
                     currentDiffValue = e.getActionCommand().toLowerCase();
                     setting.setName(e.getActionCommand().toLowerCase());
                 }
+                System.out.println("Name: " + setting.getName() + " Difficulty: " + setting.getDifficulty());
             }
         };
 
@@ -64,7 +66,7 @@ public class SettingJRadioButton extends JFrame {
         panel.add(hard);
 
         //close button
-        JButton finishButton = new JButton("Finished");
+        JButton finishButton = new JButton("Continue");
         finishButton.setSize(0, 0);
         finishButton.addActionListener(e -> {
             frame.dispose();
@@ -75,6 +77,20 @@ public class SettingJRadioButton extends JFrame {
         vader.addActionListener(actionListener);
         potter.addActionListener(actionListener);
         easy.addActionListener(actionListener);
+
+        panel.setBackground(Color.white);
+
+        hard.setBackground(Color.black);
+        hard.setForeground(Color.white);
+
+        easy.setBackground(Color.black);
+        easy.setForeground(Color.white);
+
+        vader.setBackground(Color.black);
+        vader.setForeground(Color.white);
+
+        potter.setBackground(Color.black);
+        potter.setForeground(Color.white);
 
         frame.add(panel);
         frame.setSize(300, 200);

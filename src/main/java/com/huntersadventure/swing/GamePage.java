@@ -110,7 +110,7 @@ public class GamePage {
         });
     }
 
-    public static void main(String[] args) {
-        new GamePage();
-    }
+//    public static void main(String[] args) {
+//        new GamePage();
+//    }
 }

@@ -3,7 +3,11 @@ package com.huntersadventure.game;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.huntersadventure.gameobjects.*;
 import com.huntersadventure.jsonparser.Json;
+
+import com.huntersadventure.swing.CombatInventory;
+
 import com.huntersadventure.swing.GamePage;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -379,11 +383,15 @@ public class GameController {
         return message;
     }
 
+    void displayCombatInventory(String commandTwo){
+        CombatInventory.testCombatInventory(p1);
+    }
     /**
      * processTwoCommand takes in two word input as a List
      * and checks String 0 and 1 for prep command and location
      */
     private String processTwoCommand(List<String> wordlist) {
+
         String commandOne;
         String commandTwo;
 
@@ -626,12 +634,18 @@ public class GameController {
         if (commandOne.equals("attack")) {
             // if second word is matching and enemy's location matches yours
             // then call combat
+            if(commandTwo.equalsIgnoreCase("Inventory") && (p1.getLocation() == miniboss1.getLocation() || p1.getLocation() == miniboss2.getLocation() || p1.getLocation() == finalboss.getLocation())){
+                CombatInventory.testCombatInventory(p1);
+            }
             if (commandTwo.equalsIgnoreCase("Bandit") && p1.getLocation() == miniboss1.getLocation()) {
                 attackEnemy(miniboss1);
+                displayCombatInventory(commandTwo);
             } else if (commandTwo.equalsIgnoreCase("Faceless") && p1.getLocation() == miniboss2.getLocation()) {
                 attackEnemy(miniboss2);
+                displayCombatInventory(commandTwo);
             } else if (commandTwo.equalsIgnoreCase("man-eater") && p1.getLocation() == finalboss.getLocation()) {
                 attackEnemy(finalboss);
+                displayCombatInventory(commandTwo);
             } else {
                 return "That enemy is not here!";
             }
