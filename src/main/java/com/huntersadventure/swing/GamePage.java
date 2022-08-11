@@ -44,15 +44,15 @@ public class GamePage {
         //inventory panel
         inventoryPanel = new JPanel(new GridLayout(0, 1));
         inventoryPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-//        BoxLayout experimentLayout = new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS);
-//        inventoryPanel.setLayout(experimentLayout);
+//       BoxLayout experimentLayout = new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS);
+//       inventoryPanel.setLayout(experimentLayout);
         inventoryPanel.setBounds(10, 70, 577, 350);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);
         container.add(inventoryPanel);
 
         //map image src
-        mapSrc = new ImageIcon("src/main/resources/GameText/map.png");
+        mapSrc = new ImageIcon (ClassLoader.getSystemResource("GameText/map.png"));
         resizeMap = mapSrc.getImage();
         resizedMap = resizeMap.getScaledInstance(550,330, Image.SCALE_SMOOTH);
         mapImg = new ImageIcon(resizedMap);
@@ -112,7 +112,8 @@ public class GamePage {
         });
     }
 
-//    public static void main(String[] args) {
-//        new GamePage();
-//    }
+    //for test - remove later
+    public static void main(String[] args) {
+        new GamePage();
+    }
 }
