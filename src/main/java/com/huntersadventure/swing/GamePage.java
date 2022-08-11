@@ -5,6 +5,7 @@ import com.huntersadventure.game.Combat;
 import com.huntersadventure.game.GameController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +42,10 @@ public class GamePage {
         container.add(topPanel);
 
         //inventory panel
-        inventoryPanel = new JPanel();
+        inventoryPanel = new JPanel(new GridLayout(0, 1));
+        inventoryPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+//        BoxLayout experimentLayout = new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS);
+//        inventoryPanel.setLayout(experimentLayout);
         inventoryPanel.setBounds(10, 70, 577, 350);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);

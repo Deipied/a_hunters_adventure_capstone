@@ -560,7 +560,7 @@ public class GameController {
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
-
+                        CombatInventory.testCombatInventory(GUI, p1);
                         return "You use the potion and gain " + "FULL"
                                  + " health.";
 
@@ -574,6 +574,7 @@ public class GameController {
                                 p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                         .filter(i -> i.getName().equals(commandTwo))
                                         .findFirst().orElse(null)));
+                                CombatInventory.testCombatInventory(GUI, p1);
                                 return "You use the arrows and add them to the bow.";
                             }
                         }
@@ -584,6 +585,7 @@ public class GameController {
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
+                        CombatInventory.testCombatInventory(GUI, p1);
 //                    } else if (commandTwo.equals("map")) {
 //                        printMap();
 
@@ -597,7 +599,7 @@ public class GameController {
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
-
+                        CombatInventory.testCombatInventory(GUI, p1);
                         return "You just equipped a body armor with " + "50"
                                  + " shield protection.";
 
@@ -623,6 +625,7 @@ public class GameController {
                     p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                             .filter(i -> i.getName().equals(commandTwo))
                             .findFirst().orElse(null)));
+                    CombatInventory.testCombatInventory(GUI, p1);
                     return "You drop the " + commandTwo + ".";
                 } else {
                     message = "You do not have that item.";
