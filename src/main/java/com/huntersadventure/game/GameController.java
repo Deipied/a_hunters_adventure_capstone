@@ -10,6 +10,8 @@ import com.huntersadventure.swing.GamePage;
 import com.huntersadventure.swing.SplashPage;
 
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -268,15 +270,17 @@ public class GameController {
 //    }
 
     public void printIntro() {
+        StringBuilder stringBuilder = new StringBuilder();
         try {
             Json json = new Json();
             JsonNode introNode = json.parse(new File("src/main/resources/GameText/Intro.json"));
             for (JsonNode node : introNode.get("intro")) {
-                System.out.println(node.fields().next().getValue().asText());
+                stringBuilder.append(node.fields().next().getValue().asText());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        GUI.mainText.setText(String.valueOf(stringBuilder));
     }
 
 
@@ -738,8 +742,6 @@ public class GameController {
 
         boolean keepGoing = true;
         while (keepGoing) {
-            GUI.mainText.setText("Welcome to the Hunter's Adventure!\n" +
-                    "Do you want to see the instructions? (y/n)");
 //            String input = in.readLine();
             synchronized (GameController.class) {
                 GameController.class.wait();
@@ -747,6 +749,7 @@ public class GameController {
             String input = GUI.text;
             if (input.equals("y")) {
                 printIntro();
+                keepGoing = true;
             } else if (input.equals("n")) {
                 keepGoing = false;
             } else {
