@@ -73,7 +73,8 @@ public class GamePage {
         dialogPanel.setBackground(Color.black);
         container.add(dialogPanel);
 
-        mainText = new JTextArea("Type a command below. >");
+        mainText = new JTextArea("Welcome to the Hunter's Adventure!\n" +
+                "Do you want to see the instructions? (y/n)");
         mainText.setBounds(20, 500, 1000, 250);
         mainText.setBackground(Color.black);
         mainText.setForeground(Color.white);

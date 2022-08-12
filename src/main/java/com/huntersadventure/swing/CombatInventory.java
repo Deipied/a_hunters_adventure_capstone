@@ -14,8 +14,8 @@ public class CombatInventory {
 
         GUI.inventoryPanel.removeAll();
         JList<String> displayList = new JList<>(panelList);
-        DefaultListCellRenderer renderer = (DefaultListCellRenderer) displayList.getCellRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+//        DefaultListCellRenderer renderer = (DefaultListCellRenderer) displayList.getCellRenderer();
+//        renderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (Item item : p1.getInventory()
         ) {
             panelList.addElement(item.getName());
