@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class GameOverYouWin {
+public class GameOverYouWin {
     JFrame youWinWindow;
     JPanel youWinPanel, startAgainPanel, quitPanel;
     JLabel youWinBanner;

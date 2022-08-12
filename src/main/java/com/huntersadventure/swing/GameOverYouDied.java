@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 
 
-class GameOverYouDied {
+public class GameOverYouDied {
     JFrame gameOverWindow;
     JPanel gameOverPanel, startAgainPanel, quitPanel;
     JLabel gameOverBanner;

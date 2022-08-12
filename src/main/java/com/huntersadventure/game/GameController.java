@@ -4,11 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.huntersadventure.gameobjects.*;
 import com.huntersadventure.jsonparser.Json;
 
-import com.huntersadventure.swing.CombatInventory;
-
-import com.huntersadventure.swing.GamePage;
-import com.huntersadventure.swing.InfoDisplay;
-import com.huntersadventure.swing.SplashPage;
+import com.huntersadventure.swing.*;
 
 
 import javax.swing.*;
@@ -197,7 +193,7 @@ public class GameController {
             finalboss = json.fromJson(finalBossNode, Characters.class);
 
             p1.setLocation(map.get(0));
-            miniboss1.setLocation(map.get(7));
+            miniboss1.setLocation(map.get(1));
             miniboss2.setLocation(map.get(8));
             finalboss.setLocation(map.get(9));
 
@@ -208,7 +204,7 @@ public class GameController {
 
     public void startGame() throws IOException, InterruptedException {
         GUI.mainText.setText("Welcome to the game!" +
-                "\ntype help to display commands available.");
+                "\nType 'help' to display commands available.");
         String output;
         String input;
 
@@ -217,7 +213,7 @@ public class GameController {
 //            System.out.println("Enter a command below.");
 //            System.out.println(">");
 //            input = in.readLine();
-            GUI.mainText.append("\nEnter a command below." +
+            GUI.mainText.append("\nEnter a command below.  " +
                     ">");
             synchronized (GameController.class) {
                 GameController.class.wait();
@@ -230,12 +226,14 @@ public class GameController {
 
     private String help() {
         return "Here are the basic commands:"
-                + "\ngo <direction>  : move in the specified direction"
-                + "\nlook            : displays room name, description, items in room, and NPC"
-                + "\nget <item>      : pick up the specified item in the room"
-                + "\ntalk <NPC>      : attempt to talk to the specified NPC."
-                + "\nhelp            : display commands available"
-                + "\nquit            : exit the game and return to menu";
+                + "\ngo <direction>   : move in the specified direction"
+                + "\nlook                 : displays room name, description, items in room, and NPC"
+                + "\nget <item>         : pick up the specified item in the room"
+                + "\ndrop <item>       : drops the specified item in the room"
+                + "\ntalk <NPC>       : attempt to talk to the specified NPC."
+                + "\nattack <enemy> : start combat with enemy"
+                + "\nhelp               : display commands available"
+                + "\nquit               : exit the game and return to menu";
     }
 
 //    public void printBanner() {
@@ -358,6 +356,8 @@ public class GameController {
                 case "quit":
                     message = "QUITING GAME";
                     setGameEnd(true);
+                    GUI.window.setVisible(false);
+                    GUI.window.dispose();
                     break;
                 case "look":
                     StringBuilder inventory = new StringBuilder();
@@ -378,11 +378,7 @@ public class GameController {
 
                     message =
                             "You are in the " + p1.getLocation().getName() + "\n" + p1.getLocation().getDescription() + "\n" +
-                                    "Items available in the room: " + p1.getLocation().getItems() + "\n" +
-                                    "Player's current health: " + p1.getHealth() + "\n" +
-                                    "Player's current shield: " + p1.getShield() + "\n" +
-                                    "Player's current inventory is: \n" + inventory;
-
+                                    "Items available in the room: " + p1.getLocation().getItems() + "\n";
                     break;
 
                 default:
@@ -541,6 +537,8 @@ public class GameController {
                         return "Bandit guards the key, you must kill him first";
                     } else if (commandTwo.equals("necklace") && miniboss1.getLocation() != null) {
                         return "You must defeat the Bandit first.";
+                    } else if (commandTwo.equals("arrows") && miniboss2.getLocation() != null) {
+                        return "faceless body language dissuades you from picking up the arrows";
                     } else {
                         p1.getInventory().add(gameItems.stream()
                                 .filter(i -> i.getName().equals(commandTwo))
@@ -608,7 +606,7 @@ public class GameController {
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
                         CombatInventory.testCombatInventory(GUI, p1);
-                        return "You just equipped a body armor with " + "50"
+                        return "You just equipped a shield with " + "50"
                                 + " shield protection.";
 
                     } else {
@@ -620,6 +618,7 @@ public class GameController {
 
                 if (addShield) {
                     p1.getInventory().add(gameItems.get(8));
+                    CombatInventory.testCombatInventory(GUI, p1);
                 }
             }
         }
@@ -665,7 +664,7 @@ public class GameController {
     }
 
     public void attackEnemy(Characters enemy) {
-        Characters loser = combat.enemyEncounter(enemy, p1, GUI);
+        Characters loser = combat.enemyEncounter(enemy, p1, GUI, topDisplay);
 
         if (loser != null && loser != p1) {
             loser.setLocation(null);
@@ -735,11 +734,13 @@ public class GameController {
     public void gameOver() {
         GUI.mainText.append("\nYOU HAVE DIED");
         setGameEnd(true);
+        new GameOverYouDied();
     }
 
     public void gameWin() {
         GUI.mainText.append("\nYOU HAVE WON THE GAME CONGRATS");
         setGameEnd(true);
+        new GameOverYouWin();
     }
 
     public void startPrompt() throws IOException, InterruptedException {
