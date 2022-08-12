@@ -758,7 +758,7 @@ public class GameController {
             } else if (input.equals("n")) {
                 keepGoing = false;
             } else {
-                GUI.mainText.append("\nInvalid input. Please try again.");
+                GUI.mainText.append("\nInvalid input. Please try again and use y or n.");
             }
         }
     }

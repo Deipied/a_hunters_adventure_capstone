@@ -11,8 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePage {
-    public JFrame window;
+
+   public  JFrame window;
+
     JPanel topPanel, inventoryPanel, dialogPanel, mapPanel, textPanel;
+    JScrollPane scrollPane;
     JLabel map;
     ImageIcon mapSrc, mapImg;
     Image resizeMap, resizedMap;
@@ -35,24 +38,28 @@ public class GamePage {
         container = window.getContentPane();
 
         //top panel
-        topPanel = new JPanel(new GridLayout(0,3));
+        topPanel = new JPanel();
         topPanel.setBounds(10, 10, 1175, 55);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
         topPanel.setBackground(Color.black);
         container.add(topPanel);
 
         //inventory panel
-        inventoryPanel = new JPanel(new GridLayout(0, 1));
+        inventoryPanel = new JPanel(new GridLayout(2,0));
         inventoryPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-//       BoxLayout experimentLayout = new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS);
-//       inventoryPanel.setLayout(experimentLayout);
-        inventoryPanel.setBounds(10, 70, 577, 350);
+        inventoryPanel.setBounds(10, 70, 100, 100);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);
-        container.add(inventoryPanel);
+        inventoryPanel.setPreferredSize(new Dimension(900, 500));
+        scrollPane = new JScrollPane(inventoryPanel);
+        scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+        scrollPane.setBounds(10, 70, 577, 350);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        container.add(scrollPane);
 
         //map image src
-        mapSrc = new ImageIcon (ClassLoader.getSystemResource("GameText/map.png"));
+        mapSrc = new ImageIcon("src/main/resources/GameText/map.png");
         resizeMap = mapSrc.getImage();
         resizedMap = resizeMap.getScaledInstance(550,330, Image.SCALE_SMOOTH);
         mapImg = new ImageIcon(resizedMap);
@@ -93,18 +100,7 @@ public class GamePage {
         window.setVisible(true);
         container.add(textPanel);
 
-        test.setBackground(Color.darkGray);
-        test.setFont(normalFont);
-        test.setBorder(map.getBorder());
-        test.setForeground(Color.white);
-
-        JLabel label = new JLabel("TYPE HERE ---->");
-        label.setForeground(Color.white);
-        label.setFont(normalFont);
-        label.setLabelFor(test);
-
-        textPanel.add(label);
-        textPanel.add(test);
+        textPanel.add(test, "left");
 
         // action listener and threading for player input
         test.addActionListener(new ActionListener() {
@@ -124,8 +120,7 @@ public class GamePage {
         });
     }
 
-    //for test - remove later
-    public static void main(String[] args) {
-        new GamePage();
-    }
+//    public static void main(String[] args) {
+//        new GamePage();
+//    }
 }
