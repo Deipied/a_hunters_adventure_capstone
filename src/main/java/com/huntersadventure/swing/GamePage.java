@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePage {
-    JFrame window;
+    public JFrame window;
     JPanel topPanel, inventoryPanel, dialogPanel, mapPanel, textPanel;
     JLabel map;
     ImageIcon mapSrc, mapImg;
@@ -20,7 +20,7 @@ public class GamePage {
 
     // work with dialogue and text panel
     public String text = "";
-    Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
+    Font normalFont = new Font("Times New Roman", Font.PLAIN, 24);
     public JTextArea mainText;
     JTextField test = new JTextField(20);
 
@@ -74,7 +74,7 @@ public class GamePage {
         container.add(dialogPanel);
 
         mainText = new JTextArea("Welcome to the Hunter's Adventure!\n" +
-                "Do you want to see the instructions? (y/n)");
+                "Would you like to hear the back story? (y/n)");
         mainText.setBounds(20, 500, 1000, 250);
         mainText.setBackground(Color.black);
         mainText.setForeground(Color.white);
