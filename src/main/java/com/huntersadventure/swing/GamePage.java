@@ -35,7 +35,7 @@ public class GamePage {
         container = window.getContentPane();
 
         //top panel
-        topPanel = new JPanel();
+        topPanel = new JPanel(new GridLayout(0,3));
         topPanel.setBounds(10, 10, 1175, 55);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
         topPanel.setBackground(Color.black);
@@ -92,7 +92,18 @@ public class GamePage {
         window.setVisible(true);
         container.add(textPanel);
 
-        textPanel.add(test, "left");
+        test.setBackground(Color.darkGray);
+        test.setFont(normalFont);
+        test.setBorder(map.getBorder());
+        test.setForeground(Color.white);
+
+        JLabel label = new JLabel("TYPE HERE ---->");
+        label.setForeground(Color.white);
+        label.setFont(normalFont);
+        label.setLabelFor(test);
+
+        textPanel.add(label);
+        textPanel.add(test);
 
         // action listener and threading for player input
         test.addActionListener(new ActionListener() {
