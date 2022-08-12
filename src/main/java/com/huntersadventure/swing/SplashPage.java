@@ -33,7 +33,7 @@ public class SplashPage {
 
     public SplashPage() {
         //JFrame window
-        titleWindow = new JFrame();
+        titleWindow = new JFrame("A Hunters Adventure");
         titleWindow.setSize(1200, 900);
         titleWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         titleWindow.getContentPane().setBackground(Color.black);
@@ -42,7 +42,7 @@ public class SplashPage {
         container = titleWindow.getContentPane();
 
         //resize and set title img
-        titleBannerSrc = new ImageIcon("src/main/resources/GameText/titleBanner.jpg");
+        titleBannerSrc = new ImageIcon (ClassLoader.getSystemResource("GameText/titleBanner.jpg"));
         resizeImage = titleBannerSrc.getImage();
         resizedImage = resizeImage.getScaledInstance(800, 300, Image.SCALE_SMOOTH);
         finalImage = new ImageIcon(resizedImage);
@@ -96,10 +96,9 @@ public class SplashPage {
                 getGUI();
             }
         });
-
-
     }
 
+    //for test - remove later
     public static void main(String[] args) throws IOException {
         new SplashPage();
     }

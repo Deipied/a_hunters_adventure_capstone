@@ -2,8 +2,12 @@ package com.huntersadventure.swing;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class GameOver {
+
+
+class GameOverYouDied {
     JFrame gameOverWindow;
     JPanel gameOverPanel, startAgainPanel, quitPanel;
     JLabel gameOverBanner;
@@ -13,7 +17,7 @@ class GameOver {
     Image resizeImage, resizedImage;
     Container container;
 
-    public GameOver() {
+    public GameOverYouDied() {
         //ToDo: JFrame window
         gameOverWindow = new JFrame();
         gameOverWindow.setSize(1200, 900);
@@ -30,7 +34,7 @@ class GameOver {
         container.add(gameOverPanel);
 
         //ToDo: resize image
-        gameOverBannerSrc = new ImageIcon("src/main/resources/GameText/youDied.png");
+        gameOverBannerSrc = new ImageIcon (ClassLoader.getSystemResource("GameText/youDied.png"));
         resizeImage = gameOverBannerSrc.getImage();
         resizedImage = resizeImage.getScaledInstance(800,300, Image.SCALE_SMOOTH);
         finalGameOverBannerSrc = new ImageIcon(resizedImage);
@@ -69,10 +73,28 @@ class GameOver {
         gameOverWindow.add(quitPanel);
         gameOverWindow.setVisible(true);
 
-    }
+        //JButton action Listener on start again button // calls game page
+        startAgainButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameOverWindow.setVisible(false);
+                new GamePage();
+            }
+        });
 
+        //JButton action Listener on quit button // calls splash page
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameOverWindow.setVisible(false);
+                new SplashPage();
+            }
+        });
+
+    }
+    //for test - remove later
     public static void main(String[] args) {
-        new GameOver();
+        new GameOverYouDied();
     }
 
 }

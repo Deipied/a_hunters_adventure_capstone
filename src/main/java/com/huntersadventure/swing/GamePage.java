@@ -35,7 +35,7 @@ public class GamePage {
         container = window.getContentPane();
 
         //top panel
-        topPanel = new JPanel();
+        topPanel = new JPanel(new GridLayout(0,3));
         topPanel.setBounds(10, 10, 1175, 55);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
         topPanel.setBackground(Color.black);
@@ -44,15 +44,15 @@ public class GamePage {
         //inventory panel
         inventoryPanel = new JPanel(new GridLayout(0, 1));
         inventoryPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-//        BoxLayout experimentLayout = new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS);
-//        inventoryPanel.setLayout(experimentLayout);
+//       BoxLayout experimentLayout = new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS);
+//       inventoryPanel.setLayout(experimentLayout);
         inventoryPanel.setBounds(10, 70, 577, 350);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);
         container.add(inventoryPanel);
 
         //map image src
-        mapSrc = new ImageIcon("src/main/resources/GameText/map.png");
+        mapSrc = new ImageIcon (ClassLoader.getSystemResource("GameText/map.png"));
         resizeMap = mapSrc.getImage();
         resizedMap = resizeMap.getScaledInstance(550,330, Image.SCALE_SMOOTH);
         mapImg = new ImageIcon(resizedMap);
@@ -93,7 +93,18 @@ public class GamePage {
         window.setVisible(true);
         container.add(textPanel);
 
-        textPanel.add(test, "left");
+        test.setBackground(Color.darkGray);
+        test.setFont(normalFont);
+        test.setBorder(map.getBorder());
+        test.setForeground(Color.white);
+
+        JLabel label = new JLabel("TYPE HERE ---->");
+        label.setForeground(Color.white);
+        label.setFont(normalFont);
+        label.setLabelFor(test);
+
+        textPanel.add(label);
+        textPanel.add(test);
 
         // action listener and threading for player input
         test.addActionListener(new ActionListener() {
@@ -113,7 +124,8 @@ public class GamePage {
         });
     }
 
-//    public static void main(String[] args) {
-//        new GamePage();
-//    }
+    //for test - remove later
+    public static void main(String[] args) {
+        new GamePage();
+    }
 }
