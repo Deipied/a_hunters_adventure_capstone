@@ -7,6 +7,7 @@ import com.huntersadventure.jsonparser.Json;
 import com.huntersadventure.swing.CombatInventory;
 
 import com.huntersadventure.swing.GamePage;
+import com.huntersadventure.swing.InfoDisplay;
 import com.huntersadventure.swing.SplashPage;
 
 
@@ -21,7 +22,7 @@ import java.util.Objects;
  */
 
 public class GameController {
-//    public static final String ANSI_RESET = "\u001B[0m";  //resets text color back to default value.
+    //    public static final String ANSI_RESET = "\u001B[0m";  //resets text color back to default value.
 //    public static final String cyan = "\033[1;36m";
 //    public static final String yellow = "\033[1;33m";
 //    public static final String red = "\033[1;31m";
@@ -56,6 +57,7 @@ public class GameController {
     // GUI related instantiation
     GamePage GUI = new GamePage();
     SplashPage splashPage = new SplashPage();
+    InfoDisplay topDisplay = new InfoDisplay();
 
     public GameController() throws IOException {
     }
@@ -67,6 +69,7 @@ public class GameController {
         createPlayer(townMap);
         startPrompt();
         setGameEnd(false);
+        topDisplay.infoDisplay(GUI, p1);
         startGame();
     }
 
@@ -225,12 +228,12 @@ public class GameController {
 
     private String help() {
         return "Here are the basic commands:"
-        + "\ngo [direction] - move in the specified direction"
-        +"\nlook - Read the description of the current room, and the items available and player's status. Displays any NPCs in the area to speak to."
-        +"\nget [item] - pick up the specified item"
-        +"\ntalk [NPC name] - Attempt to talk to the specified NPC. Viable NPC names are fully capitalized in location descriptions."
-        +"\nhelp - display commands available"
-        +"\nquit - exit the game and return to menu";
+                + "\ngo <direction>  : move in the specified direction"
+                + "\nlook            : displays room name, description, items in room, and NPC"
+                + "\nget <item>      : pick up the specified item in the room"
+                + "\ntalk <NPC>      : attempt to talk to the specified NPC."
+                + "\nhelp            : display commands available"
+                + "\nquit            : exit the game and return to menu";
     }
 
 //    public void printBanner() {
@@ -371,7 +374,7 @@ public class GameController {
 
                     message =
                             "You are in the " + p1.getLocation().getName() + "\n" + p1.getLocation().getDescription() + "\n" +
-                                    "Items available in the room: "  + p1.getLocation().getItems()  + "\n" +
+                                    "Items available in the room: " + p1.getLocation().getItems() + "\n" +
                                     "Player's current health: " + p1.getHealth() + "\n" +
                                     "Player's current shield: " + p1.getShield() + "\n" +
                                     "Player's current inventory is: \n" + inventory;
@@ -422,7 +425,7 @@ public class GameController {
             }
             if (p1.getLocation().getName().equals("Forbidden Forest")) {
                 if (commandTwo.equalsIgnoreCase("Ranger")) {
-                  message =  NPC.initRanger();
+                    message = NPC.initRanger();
                 } else if (commandTwo != "ranger") {
                     return "That person isn't here!";
                 }
@@ -436,7 +439,7 @@ public class GameController {
             }
             if (p1.getLocation().getName().equals("Abandoned Checkpoint")) {
                 if (commandTwo.equalsIgnoreCase("Bandit") && miniboss1.getLocation() != null) {
-                   message = NPC.initBandit();
+                    message = NPC.initBandit();
                 } else {
                     return "That enemy isn't here!";
                 }
@@ -516,6 +519,7 @@ public class GameController {
                     message = "Invalid direction.";
                     break;
             }
+            topDisplay.refresh(p1);
         }
 
         if (commandOne.equals("get")) {
@@ -539,7 +543,7 @@ public class GameController {
                                 .findFirst().orElse(null));
                         p1.getLocation().getItems().remove(commandTwo);
                         CombatInventory.testCombatInventory(GUI, p1);
-                        return "You pick up the "  + commandTwo  + ".";
+                        return "You pick up the " + commandTwo + ".";
                     }
                 }
             } else {
@@ -562,7 +566,7 @@ public class GameController {
                                 .findFirst().orElse(null)));
                         CombatInventory.testCombatInventory(GUI, p1);
                         return "You use the potion and gain " + "FULL"
-                                 + " health.";
+                                + " health.";
 
                     } else if (commandTwo.equals("arrows")) {
                         for (Item bow : p1.getInventory()) {
@@ -601,7 +605,7 @@ public class GameController {
                                 .findFirst().orElse(null)));
                         CombatInventory.testCombatInventory(GUI, p1);
                         return "You just equipped a body armor with " + "50"
-                                 + " shield protection.";
+                                + " shield protection.";
 
                     } else {
                         return "You cannot use that item.";
