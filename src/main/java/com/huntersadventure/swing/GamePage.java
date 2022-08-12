@@ -11,7 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePage {
+
    public  JFrame window;
+
     JPanel topPanel, inventoryPanel, dialogPanel, mapPanel, textPanel;
     JScrollPane scrollPane;
     JLabel map;
@@ -79,7 +81,7 @@ public class GamePage {
         container.add(dialogPanel);
 
         mainText = new JTextArea("Welcome to the Hunter's Adventure!\n" +
-                "Would you like to hear the backstory? (y/n)");//Hoon
+                "Would you like to hear the back story? (y/n)");
         mainText.setBounds(20, 500, 1000, 250);
         mainText.setBackground(Color.black);
         mainText.setForeground(Color.white);

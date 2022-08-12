@@ -1,7 +1,7 @@
 {
   "name": "Inn",
   "description": "Safely rest your head here.",
-  "items":["map","bow","sword"],
+  "items":["bow"],
   "north": -1,
   "south": 1,
   "west": -1,
