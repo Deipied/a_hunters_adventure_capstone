@@ -18,10 +18,10 @@ public class CombatInventory {
 //        renderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (Item item : p1.getInventory()
         ) {
-            panelList.addElement(item.getName());
+            panelList.addElement(item.getName() + ": "+ item.getDescription());
         }
 
-        displayList.setBounds(100, 50, 200, 200);
+        displayList.setBounds(100, 50, 400, 800);
         displayList.setBackground(Color.black);
         displayList.setForeground(Color.white);
         displayList.setFont(new Font("Serif", Font.BOLD, 20));
@@ -30,9 +30,9 @@ public class CombatInventory {
         JLabel label = new JLabel("Inventory", SwingConstants.CENTER);
         label.setFont(new Font("Serif", Font.BOLD, 33));
         label.setForeground(Color.white);
-        label.setBounds(10, 70, 577, 350);
+        label.setBounds(10, 70, 577, 10);
         GUI.inventoryPanel.add(label);
-        GUI.inventoryPanel.add(displayList);;
+        GUI.inventoryPanel.add(displayList);
 
     }
 
