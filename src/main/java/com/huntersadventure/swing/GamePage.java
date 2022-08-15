@@ -12,8 +12,7 @@ import java.awt.event.ActionListener;
 
 public class GamePage {
 
-   public  JFrame window;
-
+    public  JFrame window;
     JPanel topPanel, inventoryPanel, dialogPanel, mapPanel, textPanel;
     JScrollPane scrollPane;
     JLabel map;
@@ -28,7 +27,7 @@ public class GamePage {
     JTextField test = new JTextField(20);
 
     public GamePage(){
-        window = new JFrame();
+        window = new JFrame("A Hunter's Adventure");
         window.setSize(1200, 900);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
