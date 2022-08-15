@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Setting{
     static private String name = String.valueOf(SettingType.VADER).toLowerCase();
-    private String difficulty = String.valueOf(SettingType.EASY).toLowerCase();
+    static private String difficulty = String.valueOf(SettingType.EASY).toLowerCase();
 
 
     public Setting() {
@@ -34,20 +34,20 @@ public class Setting{
     }
 
     public static String getDifficulty(Setting setting) {
-        return setting.difficulty;
+        return difficulty;
     }
 
     void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
+        Setting.difficulty = difficulty;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Setting setting = (Setting) o;
-        return Objects.equals(getDifficulty(this), Setting.getDifficulty(setting)) && Objects.equals(getName(), setting.getName());
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Setting setting = (Setting) o;
+//        return Objects.equals(getDifficulty(this), Setting.getDifficulty(setting)) && Objects.equals(getName(), getName());
+//    }
 
     @Override
     public int hashCode() {
