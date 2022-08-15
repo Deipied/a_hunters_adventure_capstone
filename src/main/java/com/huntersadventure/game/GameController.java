@@ -6,7 +6,6 @@ import com.huntersadventure.jsonparser.Json;
 
 import com.huntersadventure.swing.*;
 import com.huntersadventures.settings.Setting;
-import org.w3c.dom.ls.LSOutput;
 
 
 import javax.swing.*;
@@ -47,26 +46,36 @@ public class GameController {
     List<String> direction = new ArrayList<>(Arrays.asList(
             "north", "south", "west", "east"));
 
-//    List<String> enemyNames = ArrayList<>(Arrays.asList(
-//            "north", "south", "west", "east"));
 
-    // TODO: Retrieve items from JSON file and store in a list.
     // Items in the room or from NPCs
     List<Location> items = new ArrayList<>();
 
     // GUI related instantiation
-    GamePage GUI = new GamePage();
-    SplashPage splashPage = new SplashPage();
+    DisplayWindow GUI = new DisplayWindow();
     InfoDisplay topDisplay = new InfoDisplay();
+//    Setting setting = new Setting();
+
+//    public void checkSetting(Setting setting) {
+//        if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
+//            System.out.println("DIFFICULTY HARD");
+//            p1.setHealth(50);
+//            miniboss1.setHealth(5000);
+//        } else if (setting.getDifficulty().equalsIgnoreCase("easy")) {
+//            System.out.println("DIFFICULTY EASY");
+//        } else {
+//            System.out.println("bad");
+//        }
+//    }
 
     public GameController() throws IOException {
     }
 
     public void run() throws IOException, InterruptedException {
-        splashPage.setGUI(GUI);
+        GUI.loadSplashPage();
         generateItems();
         generateMap();
         createPlayer(townMap);
+//        checkSetting(setting);
         startPrompt();
         setGameEnd(false);
         topDisplay.infoDisplay(GUI, p1);
@@ -569,8 +578,10 @@ public class GameController {
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
                         CombatInventory.testCombatInventory(GUI, p1);
+                        topDisplay.refresh(p1);
                         return "You use the potion and gain " + "FULL"
                                 + " health.";
+
 
                     } else if (commandTwo.equals("arrows")) {
                         for (Item bow : p1.getInventory()) {
@@ -588,12 +599,13 @@ public class GameController {
                         }
 
                     } else if (commandTwo.equals("key") && p1.getLocation().getItems().contains("locker")) {
-                        GUI.mainText.append("\nWoW! It is an armor that can protect you from the monsters!");
+//                        GUI.mainText.append("\nWoW! It is an armor that can protect you from the monsters!");
                         addShield = true;
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
                         CombatInventory.testCombatInventory(GUI, p1);
+                        return "WoW! It is an armor that can protect you from the monsters!";
 //                    } else if (commandTwo.equals("map")) {
 //                        printMap();
 
@@ -608,6 +620,7 @@ public class GameController {
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
                         CombatInventory.testCombatInventory(GUI, p1);
+                        topDisplay.refresh(p1);
                         return "You just equipped a shield with " + "50"
                                 + " shield protection.";
 
@@ -736,13 +749,13 @@ public class GameController {
     public void gameOver() {
         GUI.mainText.append("\nYOU HAVE DIED");
         setGameEnd(true);
-        new GameOverYouDied();
+        GUI.loadYouDied();
     }
 
     public void gameWin() {
         GUI.mainText.append("\nYOU HAVE WON THE GAME CONGRATS");
         setGameEnd(true);
-        new GameOverYouWin();
+        GUI.loadYouWin();
     }
 
     public void startPrompt() throws IOException, InterruptedException {

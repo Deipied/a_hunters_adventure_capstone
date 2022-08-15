@@ -8,13 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import static com.huntersadventure.swing.Music.musicLocation;
+
 
 public class SplashPage {
 
     JFrame titleWindow;
-    JPanel titlePanel, startButtonPanel;
+    JPanel menuPanel, titlePanel, startButtonPanel;
     JLabel titleBanner;
-    JButton startButton, settingsButton;
+    JButton startButton, settingsButton, musicButton;
     Font startFont = new Font("Times New Roman", Font.PLAIN, 50);
     Font settingsFont = new Font("Times New Roman", Font.PLAIN, 20);
     ImageIcon titleBannerSrc, finalImage;
@@ -42,11 +44,34 @@ public class SplashPage {
         container = titleWindow.getContentPane();
 
         //resize and set title img
-        titleBannerSrc = new ImageIcon (ClassLoader.getSystemResource("GameText/titleBanner.jpg"));
+        titleBannerSrc = new ImageIcon(ClassLoader.getSystemResource("GameText/titleBanner.jpg"));
         resizeImage = titleBannerSrc.getImage();
         resizedImage = resizeImage.getScaledInstance(800, 300, Image.SCALE_SMOOTH);
         finalImage = new ImageIcon(resizedImage);
         titleBanner = new JLabel(finalImage);
+
+        //menu
+        JMenuBar menuBar = new JMenuBar();
+        titleWindow.setJMenuBar(menuBar);
+
+        JMenu sound = new JMenu("Sound");
+        menuBar.add(sound);
+
+        JMenuItem soundOn = new JMenuItem("Play");
+        sound.add(soundOn);
+
+        JMenuItem soundPause = new JMenuItem("Pause");
+        sound.add(soundPause);
+
+        JMenuItem soundResume = new JMenuItem("Resume");
+        sound.add(soundResume);
+
+        JMenuItem soundOff = new JMenuItem("Stop");
+        sound.add(soundOff);
+
+
+        JMenu settings = new JMenu("Settings");
+        menuBar.add(settings);
 
         //title panel - holds game title
         titlePanel = new JPanel();
@@ -54,7 +79,7 @@ public class SplashPage {
         titlePanel.setBackground(Color.black);
         titlePanel.add(titleBanner);
 
-        // startButton panel holds the start button that will be added to the layout panel
+        //startButton panel holds the start button that will be added to the layout panel
         startButtonPanel = new JPanel();
         startButtonPanel.setBounds(450, 600, 250, 150);
         startButtonPanel.setBackground(Color.black);
@@ -72,23 +97,31 @@ public class SplashPage {
         settingsButton.setForeground(Color.white);
         settingsButton.setBorderPainted(false);
         settingsButton.setFont(settingsFont);
-        settingsButton.setBounds(900,10,115,30);
-        titlePanel.add(settingsButton);
+        settingsButton.setBounds(900, 10, 115, 30);
+        titleWindow.add(settingsButton);
 
         //add panels to game window
         titleWindow.add(titlePanel);
         titleWindow.add(startButtonPanel);
-        titleWindow.add(settingsButton);
         titleWindow.setVisible(true);
 
+        //Settings JButton ActionListener
         ActionListener actionListener = e -> {
             Setting setting = new Setting();
             new SettingJRadioButton(setting);
         };
-
         settingsButton.addActionListener(actionListener);
 
-        //JButton action Listener
+        //actionListener on settings
+        settings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Setting setting = new Setting();
+                new SettingJRadioButton(setting);
+            }
+        });
+
+        //Start JButton action Listener
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,10 +129,46 @@ public class SplashPage {
                 getGUI();
             }
         });
+
+        //actionListener on play
+        soundOn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music music = new Music();
+                music.playMusic(musicLocation);
+            }
+        });
+
+        //actionListener on pause
+        soundPause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music.pauseMusic();
+            }
+        });
+
+        //actionListener on resume
+        soundResume.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music.resumeMusic();
+            }
+        });
+
+        //actionListener on stop
+        soundOff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music.stopMusic();
+            }
+        });
     }
 
     //for test - remove later
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new SplashPage();
     }
 }
+
+
+
