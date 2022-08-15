@@ -2,6 +2,7 @@ package com.huntersadventure.game;
 
 import com.huntersadventure.gameobjects.Characters;
 import com.huntersadventure.gameobjects.Item;
+import com.huntersadventure.swing.DisplayWindow;
 import com.huntersadventure.swing.GamePage;
 import com.huntersadventure.swing.InfoDisplay;
 
@@ -14,7 +15,7 @@ public class Combat {
     boolean combatEnd = false;
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-    public Characters enemyEncounter(Characters enemy, Characters p1, GamePage GUI, InfoDisplay topDisplay) {
+    public Characters enemyEncounter(Characters enemy, Characters p1, DisplayWindow GUI, InfoDisplay topDisplay) {
         Characters loser = null;
         String enemyName = enemy.getName();
         String input;
@@ -73,7 +74,7 @@ public class Combat {
         return loser;
     }
 
-    private void playerPunchResolution(Characters p1, Characters enemy, GamePage GUI) throws InterruptedException {
+    private void playerPunchResolution(Characters p1, Characters enemy, DisplayWindow GUI) throws InterruptedException {
         int enemyAttackDmg = enemy.getDamage();
 
         GUI.mainText.setText("You punch dealing 5 dmg");
@@ -99,7 +100,7 @@ public class Combat {
         TimeUnit.MILLISECONDS.sleep(750);
     }
 
-    public void playerMoveResolution(Item item, Characters enemy, Characters p1, GamePage GUI) throws InterruptedException {
+    public void playerMoveResolution(Item item, Characters enemy, Characters p1, DisplayWindow GUI) throws InterruptedException {
         int playerAttackDmg = item.getValue();
         int enemyAttackDmg = enemy.getDamage();
 
