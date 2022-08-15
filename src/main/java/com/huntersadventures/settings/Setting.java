@@ -33,7 +33,7 @@ public class Setting{
         Setting.name = name;
     }
 
-    public static String getDifficulty(Setting setting) {
+    public static String getDifficulty() {
         return difficulty;
     }
 
@@ -49,10 +49,10 @@ public class Setting{
 //        return Objects.equals(getDifficulty(this), Setting.getDifficulty(setting)) && Objects.equals(getName(), getName());
 //    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getDifficulty(this));
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getName(), getDifficulty(this));
+//    }
 
     @Override
     public String toString() {

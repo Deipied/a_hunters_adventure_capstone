@@ -55,17 +55,17 @@ public class GameController {
     InfoDisplay topDisplay = new InfoDisplay();
 //    Setting setting = new Setting();
 
-//    public void checkSetting(Setting setting) {
-//        if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
-//            System.out.println("DIFFICULTY HARD");
-//            p1.setHealth(50);
-//            miniboss1.setHealth(5000);
-//        } else if (setting.getDifficulty().equalsIgnoreCase("easy")) {
-//            System.out.println("DIFFICULTY EASY");
-//        } else {
-//            System.out.println("bad");
-//        }
-//    }
+    public void checkSetting() {
+        if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
+            System.out.println("DIFFICULTY HARD");
+            p1.setHealth(50);
+            miniboss1.setHealth(5000);
+        } else if (Setting.getDifficulty().equalsIgnoreCase("easy")) {
+            System.out.println("DIFFICULTY EASY");
+        } else {
+            System.out.println("bad");
+        }
+    }
 
     public GameController() throws IOException {
     }
@@ -75,7 +75,7 @@ public class GameController {
         generateItems();
         generateMap();
         createPlayer(townMap);
-//        checkSetting(setting);
+        checkSetting();
         startPrompt();
         setGameEnd(false);
         topDisplay.infoDisplay(GUI, p1);
