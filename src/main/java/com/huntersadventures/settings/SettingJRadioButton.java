@@ -1,9 +1,13 @@
 package com.huntersadventures.settings;
 
+import com.huntersadventure.game.GameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SettingJRadioButton extends JFrame {
 
@@ -66,6 +70,15 @@ public class SettingJRadioButton extends JFrame {
         JButton finishButton = new JButton("Continue");
         finishButton.setSize(0, 0);
         finishButton.addActionListener(e -> {
+            GameController gameController = null;
+            try {
+                gameController = new GameController();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (gameController != null) {
+                gameController.checkSetting();
+            }
             frame.dispose();
         });
         panel.add(finishButton);

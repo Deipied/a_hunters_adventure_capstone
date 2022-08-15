@@ -57,11 +57,10 @@ public class GameController {
 
     public void checkSetting() {
         if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
-            System.out.println("DIFFICULTY HARD");
             p1.setHealth(50);
             miniboss1.setHealth(5000);
         } else if (Setting.getDifficulty().equalsIgnoreCase("easy")) {
-            System.out.println("DIFFICULTY EASY");
+            miniboss1.setHealth(1000);
         } else {
             System.out.println("bad");
         }
@@ -75,8 +74,8 @@ public class GameController {
         generateItems();
         generateMap();
         createPlayer(townMap);
-        checkSetting();
         startPrompt();
+        checkSetting();
         setGameEnd(false);
         topDisplay.infoDisplay(GUI, p1);
         startGame();
@@ -204,7 +203,7 @@ public class GameController {
             finalboss = json.fromJson(finalBossNode, Characters.class);
 
             p1.setLocation(map.get(0));
-            miniboss1.setLocation(map.get(1));
+            miniboss1.setLocation(map.get(7));
             miniboss2.setLocation(map.get(8));
             finalboss.setLocation(map.get(9));
 
