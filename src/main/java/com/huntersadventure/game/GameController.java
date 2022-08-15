@@ -5,6 +5,8 @@ import com.huntersadventure.gameobjects.*;
 import com.huntersadventure.jsonparser.Json;
 
 import com.huntersadventure.swing.*;
+import com.huntersadventures.settings.Setting;
+import org.w3c.dom.ls.LSOutput;
 
 
 import javax.swing.*;

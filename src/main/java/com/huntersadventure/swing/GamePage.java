@@ -50,7 +50,7 @@ public class GamePage {
         inventoryPanel.setBounds(10, 70, 100, 100);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);
-        inventoryPanel.setPreferredSize(new Dimension(900, 500));
+        inventoryPanel.setPreferredSize(new Dimension(600, 500));
         scrollPane = new JScrollPane(inventoryPanel);
         scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
         scrollPane.setBounds(10, 70, 577, 350);

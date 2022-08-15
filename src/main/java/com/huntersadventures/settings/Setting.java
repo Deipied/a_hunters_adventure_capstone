@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Setting{
-    private String name = String.valueOf(SettingType.VADER).toLowerCase();
+    static private String name = String.valueOf(SettingType.VADER).toLowerCase();
     private String difficulty = String.valueOf(SettingType.EASY).toLowerCase();
 
 
@@ -25,16 +25,16 @@ public class Setting{
 
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
-    void setName(String name) {
-        this.name = name;
+    static void setName(String name) {
+        Setting.name = name;
     }
 
-    public String getDifficulty() {
-        return difficulty;
+    public static String getDifficulty(Setting setting) {
+        return setting.difficulty;
     }
 
     void setDifficulty(String difficulty) {
@@ -46,12 +46,12 @@ public class Setting{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Setting setting = (Setting) o;
-        return getDifficulty() == setting.getDifficulty() && Objects.equals(getName(), setting.getName());
+        return Objects.equals(getDifficulty(this), Setting.getDifficulty(setting)) && Objects.equals(getName(), setting.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDifficulty());
+        return Objects.hash(getName(), getDifficulty(this));
     }
 
     @Override

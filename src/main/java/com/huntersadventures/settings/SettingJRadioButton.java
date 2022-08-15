@@ -1,7 +1,5 @@
 package com.huntersadventures.settings;
 
-import org.w3c.dom.ls.LSOutput;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,9 +38,8 @@ public class SettingJRadioButton extends JFrame {
                 }
                 if (e.getActionCommand().equals(SettingType.VADER.toString()) || e.getActionCommand().equals(SettingType.POTTER.toString())) {
                     currentDiffValue = e.getActionCommand().toLowerCase();
-                    setting.setName(e.getActionCommand().toLowerCase());
+                    Setting.setName(e.getActionCommand().toLowerCase());
                 }
-                System.out.println("Name: " + setting.getName() + " Difficulty: " + setting.getDifficulty());
             }
         };
 
