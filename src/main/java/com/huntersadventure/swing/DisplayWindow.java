@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import static com.huntersadventure.swing.Music.musicLocation;
+
 public class DisplayWindow {
     public JFrame window = new JFrame();
     JPanel titlePanel, startButtonPanel;
@@ -32,6 +34,7 @@ public class DisplayWindow {
     Font normalFont = (new Font("Times New Roman", Font.PLAIN, 24));
     JTextField test = new JTextField(20);
     public String text = "";
+    JScrollPane scrollPane;
 
 
     public void loadSplashPage() {
@@ -47,6 +50,29 @@ public class DisplayWindow {
         resizedImage = resizeImage.getScaledInstance(800, 300, Image.SCALE_SMOOTH);
         finalImage = new ImageIcon(resizedImage);
         titleBanner = new JLabel(finalImage);
+
+        //menu
+        JMenuBar menuBar = new JMenuBar();
+        window.setJMenuBar(menuBar);
+
+        JMenu sound = new JMenu("Sound");
+        menuBar.add(sound);
+
+        JMenuItem soundOn = new JMenuItem("Play");
+        sound.add(soundOn);
+
+        JMenuItem soundPause = new JMenuItem("Pause");
+        sound.add(soundPause);
+
+        JMenuItem soundResume = new JMenuItem("Resume");
+        sound.add(soundResume);
+
+        JMenuItem soundOff = new JMenuItem("Stop");
+        sound.add(soundOff);
+
+
+        JMenu settings = new JMenu("Settings");
+        menuBar.add(settings);
 
         //title panel - holds game title
         titlePanel = new JPanel();
@@ -67,18 +93,18 @@ public class DisplayWindow {
         startButtonPanel.add(startButton);
 
         //Settings button
-        settingsButton = new JButton("Settings");
-        settingsButton.setBackground(Color.black);
-        settingsButton.setForeground(Color.white);
+        settingsButton = new JButton("Game settings");
+        settingsButton.setBackground(Color.white);
+        settingsButton.setForeground(Color.black);
         settingsButton.setBorderPainted(false);
         settingsButton.setFont(settingsFont);
         settingsButton.setBounds(900, 10, 115, 30);
-        titlePanel.add(settingsButton);
+//        titlePanel.add(settingsButton);
 
         //add panels to game window
         window.add(titlePanel);
         window.add(startButtonPanel);
-        window.add(settingsButton);
+//        window.add(settingsButton);
         window.setVisible(true);
 
         ActionListener actionListener = e -> {
@@ -88,6 +114,8 @@ public class DisplayWindow {
 
         settingsButton.addActionListener(actionListener);
 
+        settings.add(settingsButton);
+
         //JButton action Listener
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -96,6 +124,38 @@ public class DisplayWindow {
                 loadGamePage();
                 window.revalidate();
                 window.repaint();
+            }
+        });
+
+        soundOn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music music = new Music();
+                music.playMusic(musicLocation);
+            }
+        });
+
+        //actionListener on pause
+        soundPause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music.pauseMusic();
+            }
+        });
+
+        //actionListener on resume
+        soundResume.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music.resumeMusic();
+            }
+        });
+
+        //actionListener on stop
+        soundOff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Music.stopMusic();
             }
         });
     }
@@ -128,7 +188,13 @@ public class DisplayWindow {
         inventoryPanel.setBounds(10, 70, 577, 350);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);
-        container.add(inventoryPanel);
+        inventoryPanel.setPreferredSize(new Dimension(600, 500));
+        scrollPane = new JScrollPane(inventoryPanel);
+        scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+        scrollPane.setBounds(10, 70, 577, 350);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        container.add(scrollPane);
 
         //map image src
         mapSrc = new ImageIcon(ClassLoader.getSystemResource("GameText/map.png"));
