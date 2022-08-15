@@ -10,7 +10,7 @@ public class InfoDisplay {
     Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
     JLabel locationLabel, locationName, hpLabel, hpLabelNum, shieldLabel, shieldLabelNum;
 
-    public void infoDisplay(GamePage GUI, Characters p1) {
+    public void infoDisplay(DisplayWindow GUI, Characters p1) {
         locationLabel = new JLabel();
         locationLabel.setFont(normalFont);
         locationLabel.setForeground(Color.white);

@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class CombatInventory {
 
-    public static void testCombatInventory(GamePage GUI, Characters p1) {
+    public static void testCombatInventory(DisplayWindow GUI, Characters p1) {
 
         DefaultListModel<String> panelList = new DefaultListModel<>();
 
