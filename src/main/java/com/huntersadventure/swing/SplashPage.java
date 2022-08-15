@@ -18,7 +18,7 @@ public class SplashPage {
     JLabel titleBanner;
     JButton startButton, settingsButton, musicButton;
     Font startFont = new Font("Times New Roman", Font.PLAIN, 50);
-    Font settingsFont = new Font("Times New Roman", Font.PLAIN, 20);
+    Font settingsFont = new Font("Times New Roman", Font.PLAIN, 15);
     ImageIcon titleBannerSrc, finalImage;
     Image resizeImage, resizedImage;
     Container container;
@@ -92,13 +92,12 @@ public class SplashPage {
         startButtonPanel.add(startButton);
 
         //Settings button
-        settingsButton = new JButton("Settings");
-        settingsButton.setBackground(Color.black);
-        settingsButton.setForeground(Color.white);
+        settingsButton = new JButton("Game settings");
+        settingsButton.setBackground(Color.white);
+        settingsButton.setForeground(Color.black);
         settingsButton.setBorderPainted(false);
         settingsButton.setFont(settingsFont);
         settingsButton.setBounds(900, 10, 115, 30);
-        titleWindow.add(settingsButton);
 
         //add panels to game window
         titleWindow.add(titlePanel);
@@ -112,14 +111,7 @@ public class SplashPage {
         };
         settingsButton.addActionListener(actionListener);
 
-        //actionListener on settings
-        settings.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Setting setting = new Setting();
-                new SettingJRadioButton(setting);
-            }
-        });
+        settings.add(settingsButton);
 
         //Start JButton action Listener
         startButton.addActionListener(new ActionListener() {
@@ -130,7 +122,6 @@ public class SplashPage {
             }
         });
 
-        //actionListener on play
         soundOn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
