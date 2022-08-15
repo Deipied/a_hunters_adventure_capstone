@@ -92,15 +92,19 @@ public class SettingJRadioButton extends JFrame {
 
         hard.setBackground(Color.black);
         hard.setForeground(Color.white);
+        hard.setOpaque(true);
 
         easy.setBackground(Color.black);
         easy.setForeground(Color.white);
+        easy.setOpaque(true);
 
         vader.setBackground(Color.black);
         vader.setForeground(Color.white);
+        vader.setOpaque(true);
 
         potter.setBackground(Color.black);
         potter.setForeground(Color.white);
+        potter.setOpaque(true);
 
         frame.add(panel);
         frame.setSize(300, 200);

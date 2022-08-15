@@ -57,10 +57,10 @@ public class GameController {
 
     public void checkSetting() {
         if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
-            p1.setHealth(50);
-            miniboss1.setHealth(5000);
+            p1.setHealth(75);
+            miniboss1.setHealth(100);
         } else if (Setting.getDifficulty().equalsIgnoreCase("easy")) {
-            miniboss1.setHealth(1000);
+            miniboss1.setHealth(50);
         } else {
             System.out.println("bad");
         }
