@@ -29,7 +29,7 @@ public class NPC extends Characters {
             Json json = new Json();
             int randomItem = r.nextInt(dialogue.size());
             String randomElement = dialogue.get(randomItem);
-            JsonNode bsNode = json.parse(new File("src/main/resources/characters/blacksmith.json"));
+            JsonNode bsNode = json.parse(json.getResourceStream("/characters/blacksmith.json"));
 
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
@@ -61,7 +61,7 @@ public class NPC extends Characters {
             Json json = new Json();
             int randomItem = r.nextInt(dialogue.size());
             String randomElement = dialogue.get(randomItem);
-            JsonNode bsNode = json.parse(new File("src/main/resources/characters/guard1.json"));
+            JsonNode bsNode = json.parse(json.getResourceStream("/characters/guard1.json"));
 
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
@@ -93,7 +93,7 @@ public class NPC extends Characters {
             Json json = new Json();
             int randomItem = r.nextInt(dialogue.size());
             String randomElement = dialogue.get(randomItem);
-            JsonNode bsNode = json.parse(new File("src/main/resources/characters/guard2.json"));
+            JsonNode bsNode = json.parse(json.getResourceStream("/characters/guard2.json"));
 
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
@@ -126,7 +126,7 @@ public class NPC extends Characters {
             Json json = new Json();
             int randomItem = r.nextInt(dialogue.size());
             String randomElement = dialogue.get(randomItem);
-            JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss1.json"));
+            JsonNode bsNode = json.parse(json.getResourceStream("/characters/miniboss1.json"));
 
             if (!wasPrinted) {
 //                String desc = bsNode.get("description").textValue();
@@ -151,7 +151,7 @@ public class NPC extends Characters {
     public static String initFaceless(){
         try {
             Json json = new Json();
-            JsonNode bsNode = json.parse(new File("src/main/resources/characters/miniboss2.json"));
+            JsonNode bsNode = json.parse(json.getResourceStream("/characters/miniboss2.json"));
 
             if (!wasPrinted) {
 //                String desc = bsNode.get("description").textValue();
@@ -183,7 +183,7 @@ public class NPC extends Characters {
             Json json = new Json();
             int randomItem = r.nextInt(dialogue.size());
             String randomElement = dialogue.get(randomItem);
-            JsonNode bsNode = json.parse(new File("src/main/resources/characters/finalboss.json"));
+            JsonNode bsNode = json.parse(json.getResourceStream("/characters/finalboss.json"));
 
             if (!wasPrinted) {
 //                String desc = bsNode.get("description").textValue();
