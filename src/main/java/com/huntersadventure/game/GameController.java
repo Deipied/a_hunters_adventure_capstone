@@ -58,7 +58,6 @@ public class GameController {
     public void checkSetting() {
         if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
             p1.setHealth(75);
-            miniboss1.setHealth(100);
         } else if (Setting.getDifficulty().equalsIgnoreCase("easy")) {
             miniboss1.setHealth(50);
         } else {
@@ -284,7 +283,7 @@ public class GameController {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             Json json = new Json();
-            JsonNode introNode = json.parse(new File("src/main/resources/GameText/Intro.json"));
+            JsonNode introNode = json.parse(json.getResourceStream("/GameText/Intro.json"));
             for (JsonNode node : introNode.get("intro")) {
                 stringBuilder.append(node.fields().next().getValue().asText());
             }
@@ -603,6 +602,9 @@ public class GameController {
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
+                        p1.getInventory().add(gameItems.stream()
+                                .filter(i -> i.getName().equals("shield"))
+                                .findFirst().orElse(null));
                         CombatInventory.testCombatInventory(GUI, p1);
                         return "WoW! It is an armor that can protect you from the monsters!";
 //                    } else if (commandTwo.equals("map")) {
@@ -630,10 +632,10 @@ public class GameController {
                     message = "You do not have that item.";
                 }
 
-                if (addShield) {
-                    p1.getInventory().add(gameItems.get(8));
-                    CombatInventory.testCombatInventory(GUI, p1);
-                }
+//                if (addShield) {
+//                    p1.getInventory().add(gameItems.get(8));
+//                    CombatInventory.testCombatInventory(GUI, p1);
+//                }
             }
         }
 

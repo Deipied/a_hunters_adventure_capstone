@@ -333,24 +333,24 @@ public class DisplayWindow {
         window.setVisible(true);
 
         //JButton action Listener on start again button // calls game page
-        startAgainButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                window.setVisible(false);
-                window.dispose();
-                try {
-                    window.revalidate();
-                    GameController gameController = new GameController();
-                    gameController.run();
-                    window.setVisible(true);
-                    window.getContentPane().setBackground(Color.black);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
+//        startAgainButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                window.setVisible(false);
+//                window.dispose();
+//                try {
+//                    window.revalidate();
+//                    GameController gameController = new GameController();
+//                    gameController.run();
+//                    window.setVisible(true);
+//                    window.getContentPane().setBackground(Color.black);
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                } catch (InterruptedException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        });
 
         //JButton action Listener on quit button // calls splash page
         quitButton.addActionListener(new ActionListener() {
@@ -427,25 +427,25 @@ public class DisplayWindow {
         window.setVisible(true);
 
         //JButton action Listener on start again button // resets game and goes to splash page
-        startAgainButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                window.setVisible(false);
-                window.dispose();
-                try {
-                    window.revalidate();
-                    GameController gameController = new GameController();
-                    gameController.run();
-                    window.setVisible(true);
-                    window.getContentPane().setBackground(Color.black);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
+//        startAgainButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                window.setVisible(false);
+//                window.dispose();
+//                try {
+//                    window.revalidate();
+//                    GameController gameController = new GameController();
+//                    gameController.run();
+//                    window.setVisible(true);
+//                    window.getContentPane().setBackground(Color.black);
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                } catch (InterruptedException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//
+//            }
+//        });
 
         //JButton action Listener on quit button // exits the game
         quitButton.addActionListener(new ActionListener() {

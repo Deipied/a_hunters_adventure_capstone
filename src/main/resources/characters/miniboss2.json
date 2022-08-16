@@ -1,7 +1,7 @@
 {
   "name": "Faceless",
-  "health": 100,
-  "damage": 20,
+  "health": 75,
+  "damage": 15,
   "shield": 20,
   "description": "A creature of legend, known only as Faceless. Marked by a disfigured face stitched together with no discernible features.As it tries to speak, the only sounds it makes come out as angered, muffled growls",
   "defeat": "Time freezes, before Faceless implodes on itself, folding like origami. Slowly you regain movement... that was weird"
