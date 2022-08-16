@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.huntersadventure.gameobjects.*;
 import com.huntersadventure.jsonparser.Json;
 
-import com.huntersadventure.swing.CombatInventory;
-
-import com.huntersadventure.swing.GamePage;
-import com.huntersadventure.swing.SplashPage;
+import com.huntersadventure.swing.*;
+import com.huntersadventures.settings.Setting;
 
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 
 public class GameController {
-//    public static final String ANSI_RESET = "\u001B[0m";  //resets text color back to default value.
+    //    public static final String ANSI_RESET = "\u001B[0m";  //resets text color back to default value.
 //    public static final String cyan = "\033[1;36m";
 //    public static final String yellow = "\033[1;33m";
 //    public static final String red = "\033[1;31m";
@@ -46,27 +46,37 @@ public class GameController {
     List<String> direction = new ArrayList<>(Arrays.asList(
             "north", "south", "west", "east"));
 
-//    List<String> enemyNames = ArrayList<>(Arrays.asList(
-//            "north", "south", "west", "east"));
 
-    // TODO: Retrieve items from JSON file and store in a list.
     // Items in the room or from NPCs
     List<Location> items = new ArrayList<>();
 
     // GUI related instantiation
-    GamePage GUI = new GamePage();
-    SplashPage splashPage = new SplashPage();
+    DisplayWindow GUI = new DisplayWindow();
+    InfoDisplay topDisplay = new InfoDisplay();
+//    Setting setting = new Setting();
+
+    public void checkSetting() {
+        if (Setting.getDifficulty().equalsIgnoreCase("hard")) {
+            p1.setHealth(75);
+        } else if (Setting.getDifficulty().equalsIgnoreCase("easy")) {
+            miniboss1.setHealth(50);
+        } else {
+            System.out.println("bad");
+        }
+    }
 
     public GameController() throws IOException {
     }
 
     public void run() throws IOException, InterruptedException {
-        splashPage.setGUI(GUI);
+        GUI.loadSplashPage();
         generateItems();
         generateMap();
         createPlayer(townMap);
         startPrompt();
+        checkSetting();
         setGameEnd(false);
+        topDisplay.infoDisplay(GUI, p1);
         startGame();
     }
 
@@ -203,7 +213,7 @@ public class GameController {
 
     public void startGame() throws IOException, InterruptedException {
         GUI.mainText.setText("Welcome to the game!" +
-                "\ntype help to display commands available.");
+                "\nType 'help' to display commands available.");
         String output;
         String input;
 
@@ -212,8 +222,8 @@ public class GameController {
 //            System.out.println("Enter a command below.");
 //            System.out.println(">");
 //            input = in.readLine();
-            GUI.mainText.append("\nEnter a command below." +
-                    ">");
+            //GUI.mainText.append("\nEnter a command below.  " +
+                    //">");
             synchronized (GameController.class) {
                 GameController.class.wait();
             }
@@ -225,12 +235,14 @@ public class GameController {
 
     private String help() {
         return "Here are the basic commands:"
-        + "\ngo [direction] - move in the specified direction"
-        +"\nlook - Read the description of the current room, and the items available and player's status. Displays any NPCs in the area to speak to."
-        +"\nget [item] - pick up the specified item"
-        +"\ntalk [NPC name] - Attempt to talk to the specified NPC. Viable NPC names are fully capitalized in location descriptions."
-        +"\nhelp - display commands available"
-        +"\nquit - exit the game and return to menu";
+                + "\ngo <direction>   : move in the specified direction"
+                + "\nlook                 : displays room name, description, items in room, and NPC"
+                + "\nget <item>         : pick up the specified item in the room"
+                + "\ndrop <item>       : drops the specified item in the room"
+                + "\ntalk <NPC>       : attempt to talk to the specified NPC."
+                + "\nattack <enemy> : start combat with enemy"
+                + "\nhelp               : display commands available"
+                + "\nquit               : exit the game and return to menu";
     }
 
 //    public void printBanner() {
@@ -268,15 +280,17 @@ public class GameController {
 //    }
 
     public void printIntro() {
+        StringBuilder stringBuilder = new StringBuilder();
         try {
             Json json = new Json();
-            JsonNode introNode = json.parse(new File("src/main/resources/GameText/Intro.json"));
+            JsonNode introNode = json.parse(json.getResourceStream("/GameText/Intro.json"));
             for (JsonNode node : introNode.get("intro")) {
-                System.out.println(node.fields().next().getValue().asText());
+                stringBuilder.append(node.fields().next().getValue().asText());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        GUI.mainText.setText(String.valueOf(stringBuilder));
     }
 
 
@@ -351,6 +365,8 @@ public class GameController {
                 case "quit":
                     message = "QUITING GAME";
                     setGameEnd(true);
+                    GUI.window.setVisible(false);
+                    GUI.window.dispose();
                     break;
                 case "look":
                     StringBuilder inventory = new StringBuilder();
@@ -371,11 +387,7 @@ public class GameController {
 
                     message =
                             "You are in the " + p1.getLocation().getName() + "\n" + p1.getLocation().getDescription() + "\n" +
-                                    "Items available in the room: "  + p1.getLocation().getItems()  + "\n" +
-                                    "Player's current health: " + p1.getHealth() + "\n" +
-                                    "Player's current shield: " + p1.getShield() + "\n" +
-                                    "Player's current inventory is: \n" + inventory;
-
+                                    "Items available in the room: " + p1.getLocation().getItems() + "\n";
                     break;
 
                 default:
@@ -422,7 +434,7 @@ public class GameController {
             }
             if (p1.getLocation().getName().equals("Forbidden Forest")) {
                 if (commandTwo.equalsIgnoreCase("Ranger")) {
-                  message =  NPC.initRanger();
+                    message = NPC.initRanger();
                 } else if (commandTwo != "ranger") {
                     return "That person isn't here!";
                 }
@@ -436,7 +448,7 @@ public class GameController {
             }
             if (p1.getLocation().getName().equals("Abandoned Checkpoint")) {
                 if (commandTwo.equalsIgnoreCase("Bandit") && miniboss1.getLocation() != null) {
-                   message = NPC.initBandit();
+                    message = NPC.initBandit();
                 } else {
                     return "That enemy isn't here!";
                 }
@@ -516,6 +528,7 @@ public class GameController {
                     message = "Invalid direction.";
                     break;
             }
+            topDisplay.refresh(p1);
         }
 
         if (commandOne.equals("get")) {
@@ -533,13 +546,15 @@ public class GameController {
                         return "Bandit guards the key, you must kill him first";
                     } else if (commandTwo.equals("necklace") && miniboss1.getLocation() != null) {
                         return "You must defeat the Bandit first.";
+                    } else if (commandTwo.equals("arrows") && miniboss2.getLocation() != null) {
+                        return "faceless body language dissuades you from picking up the arrows";
                     } else {
                         p1.getInventory().add(gameItems.stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null));
                         p1.getLocation().getItems().remove(commandTwo);
                         CombatInventory.testCombatInventory(GUI, p1);
-                        return "You pick up the "  + commandTwo  + ".";
+                        return "You picked up the " + commandTwo + ".";
                     }
                 }
             } else {
@@ -560,9 +575,11 @@ public class GameController {
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
-
+                        CombatInventory.testCombatInventory(GUI, p1);
+                        topDisplay.refresh(p1);
                         return "You use the potion and gain " + "FULL"
-                                 + " health.";
+                                + " health.";
+
 
                     } else if (commandTwo.equals("arrows")) {
                         for (Item bow : p1.getInventory()) {
@@ -574,16 +591,22 @@ public class GameController {
                                 p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                         .filter(i -> i.getName().equals(commandTwo))
                                         .findFirst().orElse(null)));
+                                CombatInventory.testCombatInventory(GUI, p1);
                                 return "You use the arrows and add them to the bow.";
                             }
                         }
 
                     } else if (commandTwo.equals("key") && p1.getLocation().getItems().contains("locker")) {
-                        GUI.mainText.append("\nWoW! It is an armor that can protect you from the monsters!");
+//                        GUI.mainText.append("\nWoW! It is an armor that can protect you from the monsters!");
                         addShield = true;
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
+                        p1.getInventory().add(gameItems.stream()
+                                .filter(i -> i.getName().equals("shield"))
+                                .findFirst().orElse(null));
+                        CombatInventory.testCombatInventory(GUI, p1);
+                        return "WoW! It is an armor that can protect you from the monsters!";
 //                    } else if (commandTwo.equals("map")) {
 //                        printMap();
 
@@ -597,9 +620,10 @@ public class GameController {
                         p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                                 .filter(i -> i.getName().equals(commandTwo))
                                 .findFirst().orElse(null)));
-
-                        return "You just equipped a body armor with " + "50"
-                                 + " shield protection.";
+                        CombatInventory.testCombatInventory(GUI, p1);
+                        topDisplay.refresh(p1);
+                        return "You just equipped a shield with " + "50"
+                                + " shield protection.";
 
                     } else {
                         return "You cannot use that item.";
@@ -608,9 +632,10 @@ public class GameController {
                     message = "You do not have that item.";
                 }
 
-                if (addShield) {
-                    p1.getInventory().add(gameItems.get(8));
-                }
+//                if (addShield) {
+//                    p1.getInventory().add(gameItems.get(8));
+//                    CombatInventory.testCombatInventory(GUI, p1);
+//                }
             }
         }
 
@@ -623,6 +648,7 @@ public class GameController {
                     p1.getInventory().remove(Objects.requireNonNull(p1.getInventory().stream()
                             .filter(i -> i.getName().equals(commandTwo))
                             .findFirst().orElse(null)));
+                    CombatInventory.testCombatInventory(GUI, p1);
                     return "You drop the " + commandTwo + ".";
                 } else {
                     message = "You do not have that item.";
@@ -654,7 +680,7 @@ public class GameController {
     }
 
     public void attackEnemy(Characters enemy) {
-        Characters loser = combat.enemyEncounter(enemy, p1, GUI);
+        Characters loser = combat.enemyEncounter(enemy, p1, GUI, topDisplay);
 
         if (loser != null && loser != p1) {
             loser.setLocation(null);
@@ -724,19 +750,19 @@ public class GameController {
     public void gameOver() {
         GUI.mainText.append("\nYOU HAVE DIED");
         setGameEnd(true);
+        GUI.loadYouDied();
     }
 
     public void gameWin() {
         GUI.mainText.append("\nYOU HAVE WON THE GAME CONGRATS");
         setGameEnd(true);
+        GUI.loadYouWin();
     }
 
     public void startPrompt() throws IOException, InterruptedException {
 
         boolean keepGoing = true;
         while (keepGoing) {
-            GUI.mainText.setText("Welcome to the Hunter's Adventure!\n" +
-                    "Do you want to see the instructions? (y/n)");
 //            String input = in.readLine();
             synchronized (GameController.class) {
                 GameController.class.wait();
@@ -744,10 +770,11 @@ public class GameController {
             String input = GUI.text;
             if (input.equals("y")) {
                 printIntro();
+                keepGoing = true;
             } else if (input.equals("n")) {
                 keepGoing = false;
             } else {
-                GUI.mainText.append("\nInvalid input. Please try again.");
+                GUI.mainText.append("\nInvalid input. Please try again and use y or n.");
             }
         }
     }

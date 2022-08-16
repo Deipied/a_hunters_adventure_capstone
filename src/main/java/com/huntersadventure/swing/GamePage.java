@@ -5,13 +5,16 @@ import com.huntersadventure.game.Combat;
 import com.huntersadventure.game.GameController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePage {
-    JFrame window;
+
+    public  JFrame window;
     JPanel topPanel, inventoryPanel, dialogPanel, mapPanel, textPanel;
+    JScrollPane scrollPane;
     JLabel map;
     ImageIcon mapSrc, mapImg;
     Image resizeMap, resizedMap;
@@ -19,12 +22,12 @@ public class GamePage {
 
     // work with dialogue and text panel
     public String text = "";
-    Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
+    Font normalFont = new Font("Times New Roman", Font.PLAIN, 24);
     public JTextArea mainText;
     JTextField test = new JTextField(20);
 
     public GamePage(){
-        window = new JFrame();
+        window = new JFrame("A Hunter's Adventure");
         window.setSize(1200, 900);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
@@ -41,11 +44,18 @@ public class GamePage {
         container.add(topPanel);
 
         //inventory panel
-        inventoryPanel = new JPanel();
-        inventoryPanel.setBounds(10, 70, 577, 350);
+        inventoryPanel = new JPanel(new GridLayout(2,0));
+        inventoryPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        inventoryPanel.setBounds(10, 70, 100, 100);
         inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         inventoryPanel.setBackground(Color.black);
-        container.add(inventoryPanel);
+        inventoryPanel.setPreferredSize(new Dimension(600, 500));
+        scrollPane = new JScrollPane(inventoryPanel);
+        scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+        scrollPane.setBounds(10, 70, 577, 350);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        container.add(scrollPane);
 
         //map image src
         mapSrc = new ImageIcon("src/main/resources/GameText/map.png");
@@ -69,7 +79,8 @@ public class GamePage {
         dialogPanel.setBackground(Color.black);
         container.add(dialogPanel);
 
-        mainText = new JTextArea("Type a command below. >");
+        mainText = new JTextArea("Welcome to the Hunter's Adventure!\n" +
+                "Would you like to hear the back story? (y/n)");
         mainText.setBounds(20, 500, 1000, 250);
         mainText.setBackground(Color.black);
         mainText.setForeground(Color.white);

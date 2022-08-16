@@ -1,11 +1,13 @@
 package com.huntersadventures.settings;
 
-import org.w3c.dom.ls.LSOutput;
+import com.huntersadventure.game.GameController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SettingJRadioButton extends JFrame {
 
@@ -40,9 +42,8 @@ public class SettingJRadioButton extends JFrame {
                 }
                 if (e.getActionCommand().equals(SettingType.VADER.toString()) || e.getActionCommand().equals(SettingType.POTTER.toString())) {
                     currentDiffValue = e.getActionCommand().toLowerCase();
-                    setting.setName(e.getActionCommand().toLowerCase());
+                    Setting.setName(e.getActionCommand().toLowerCase());
                 }
-                System.out.println("Name: " + setting.getName() + " Difficulty: " + setting.getDifficulty());
             }
         };
 
@@ -69,6 +70,15 @@ public class SettingJRadioButton extends JFrame {
         JButton finishButton = new JButton("Continue");
         finishButton.setSize(0, 0);
         finishButton.addActionListener(e -> {
+            GameController gameController = null;
+            try {
+                gameController = new GameController();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (gameController != null) {
+                gameController.checkSetting();
+            }
             frame.dispose();
         });
         panel.add(finishButton);
@@ -82,15 +92,19 @@ public class SettingJRadioButton extends JFrame {
 
         hard.setBackground(Color.black);
         hard.setForeground(Color.white);
+        hard.setOpaque(true);
 
         easy.setBackground(Color.black);
         easy.setForeground(Color.white);
+        easy.setOpaque(true);
 
         vader.setBackground(Color.black);
         vader.setForeground(Color.white);
+        vader.setOpaque(true);
 
         potter.setBackground(Color.black);
         potter.setForeground(Color.white);
+        potter.setOpaque(true);
 
         frame.add(panel);
         frame.setSize(300, 200);

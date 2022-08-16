@@ -2,7 +2,9 @@ package com.huntersadventure.game;
 
 import com.huntersadventure.gameobjects.Characters;
 import com.huntersadventure.gameobjects.Item;
+import com.huntersadventure.swing.DisplayWindow;
 import com.huntersadventure.swing.GamePage;
+import com.huntersadventure.swing.InfoDisplay;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +15,7 @@ public class Combat {
     boolean combatEnd = false;
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-    public Characters enemyEncounter(Characters enemy, Characters p1, GamePage GUI) {
+    public Characters enemyEncounter(Characters enemy, Characters p1, DisplayWindow GUI, InfoDisplay topDisplay) {
         Characters loser = null;
         String enemyName = enemy.getName();
         String input;
@@ -26,10 +28,10 @@ public class Combat {
             while (p1.getHealth() > 0 && enemy.getHealth() > 0) {
                 TimeUnit.MILLISECONDS.sleep(750);
                 GUI.mainText.append("\nPlayer health & shield: " + p1.getHealth() +
-                        ", " + p1.getShield());
+                        " | " + p1.getShield());
                 GUI.mainText.append("\nEnemy health & shield: " + enemy.getHealth() +
-                        ", " + enemy.getShield());
-                GUI.mainText.append("\nWhat would you like to use?");
+                        " | " + enemy.getShield());
+                GUI.mainText.append("\nWhat would you like to use? Type in a weapon from your inventory or punch.");
                 GUI.mainText.append("\n>");
 //                input = in.readLine();
                 synchronized (Combat.class) {
@@ -48,17 +50,21 @@ public class Combat {
                     TimeUnit.MILLISECONDS.sleep(750);
                 } else {
                     TimeUnit.MILLISECONDS.sleep(750);
-                    System.out.println("You can't use that");
-                    System.out.println("type in a weapon, or punch");
+                    GUI.mainText.setText("You can't use that");
                     TimeUnit.MILLISECONDS.sleep(750);
+                    GUI.mainText.append("\nPlease type in a weapon, or punch");
+                    TimeUnit.MILLISECONDS.sleep(1000);
                 }
+                topDisplay.refresh(p1);
             }
             GUI.mainText.setText("COMBAT END");
             if (p1.getHealth() <= 0) {
                 GUI.mainText.append("\nResult: YOU HAVE DIED\n");
+                TimeUnit.MILLISECONDS.sleep(2000);
                 loser = p1;
             } else {
                 GUI.mainText.append("\nResult: ENEMY HAS DIED\n");
+                TimeUnit.MILLISECONDS.sleep(2000);
                 loser = enemy;
             }
         } catch (InterruptedException e) {
@@ -68,14 +74,14 @@ public class Combat {
         return loser;
     }
 
-    private void playerPunchResolution(Characters p1, Characters enemy, GamePage GUI) throws InterruptedException {
+    private void playerPunchResolution(Characters p1, Characters enemy, DisplayWindow GUI) throws InterruptedException {
         int enemyAttackDmg = enemy.getDamage();
 
         GUI.mainText.setText("You punch dealing 5 dmg");
         if (enemy.getShield() > 0) {
-            enemy.setShield(enemy.getShield() - 5);
+            enemy.setShield(Math.max((enemy.getShield() - 5), 0));
         } else {
-            enemy.setHealth(enemy.getHealth() - 5);
+            enemy.setHealth(enemy.getHealth()-5);
         }
         TimeUnit.MILLISECONDS.sleep(750);
 //        GUI.mainText.append("\nEnemy health & shield: " + enemy.getHealth() + ", " + enemy.getShield());
@@ -84,7 +90,7 @@ public class Combat {
         if (enemy.getHealth() > 0) {
             GUI.mainText.append("\n" + enemy.getName() + " attacks you dealing " + enemyAttackDmg + " damage");
             if (p1.getShield() > 0) {
-                p1.setShield(p1.getShield() - enemyAttackDmg);
+                p1.setShield(Math.max((p1.getShield() - enemyAttackDmg),0));
             } else {
                 p1.setHealth(p1.getHealth() - enemyAttackDmg);
             }
@@ -94,7 +100,7 @@ public class Combat {
         TimeUnit.MILLISECONDS.sleep(750);
     }
 
-    public void playerMoveResolution(Item item, Characters enemy, Characters p1, GamePage GUI) throws InterruptedException {
+    public void playerMoveResolution(Item item, Characters enemy, Characters p1, DisplayWindow GUI) throws InterruptedException {
         int playerAttackDmg = item.getValue();
         int enemyAttackDmg = enemy.getDamage();
 
@@ -105,7 +111,11 @@ public class Combat {
 
         GUI.mainText.setText("You use your " + item.getName() + " and deal " + playerAttackDmg + " damage");
         if (enemy.getShield() > 0) {
-            enemy.setShield(newEnemyShield);
+            if (newEnemyShield <= 0 ) {
+                enemy.setShield(0);
+            } else {
+                enemy.setShield(newEnemyShield);
+            }
         } else {
             enemy.setHealth(newEnemyHealth);
         }
@@ -115,7 +125,7 @@ public class Combat {
         if (enemy.getHealth() > 0) {
             GUI.mainText.append("\n" +enemy.getName() + " attacks you dealing " + enemyAttackDmg + " damage");
             if (p1.getShield() > 0) {
-                p1.setShield(newPlayerShield);
+                p1.setShield(Math.max(newPlayerShield,0));
             } else {
                 p1.setHealth(newPlayerHealth);
             }
