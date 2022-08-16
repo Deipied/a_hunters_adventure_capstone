@@ -34,7 +34,7 @@ public class NPC extends Characters {
             if (!wasPrinted) {
                 String desc = bsNode.get("desc").textValue();
 //                TimeUnit.MILLISECONDS.sleep(500);
-                message = desc + "\nDue to the recent string of attacks, my sales have gone up tremendously. Unfortunately for you, all I have is this arrow.";
+                message = desc + "\nDue to the recent string of attacks, my sales have gone up tremendously. I have nothing but this sword for you.";
 //                TimeUnit.MILLISECONDS.sleep(750);
                 wasPrinted = true;
             } else {

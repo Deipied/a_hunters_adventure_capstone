@@ -1,5 +1,6 @@
 package com.huntersadventure.swing;
 
+import com.huntersadventure.client.Main;
 import com.huntersadventure.game.Combat;
 import com.huntersadventure.game.GameController;
 import com.huntersadventures.settings.Setting;
@@ -99,12 +100,11 @@ public class DisplayWindow {
         settingsButton.setBorderPainted(false);
         settingsButton.setFont(settingsFont);
         settingsButton.setBounds(900, 10, 115, 30);
-//        titlePanel.add(settingsButton);
+
 
         //add panels to game window
         window.add(titlePanel);
         window.add(startButtonPanel);
-//        window.add(settingsButton);
         window.setVisible(true);
 
         ActionListener actionListener = e -> {
@@ -339,8 +339,11 @@ public class DisplayWindow {
                 window.setVisible(false);
                 window.dispose();
                 try {
+                    window.revalidate();
                     GameController gameController = new GameController();
                     gameController.run();
+                    window.setVisible(true);
+                    window.getContentPane().setBackground(Color.black);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {
@@ -370,8 +373,6 @@ public class DisplayWindow {
 
     public void loadYouDied() {
         window.getContentPane().removeAll();
-
-
         window.setSize(1200, 900);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
@@ -425,24 +426,28 @@ public class DisplayWindow {
         window.add(quitPanel);
         window.setVisible(true);
 
-        //JButton action Listener on start again button // calls game page
+        //JButton action Listener on start again button // resets game and goes to splash page
         startAgainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 window.setVisible(false);
                 window.dispose();
                 try {
+                    window.revalidate();
                     GameController gameController = new GameController();
                     gameController.run();
+                    window.setVisible(true);
+                    window.getContentPane().setBackground(Color.black);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
+
             }
         });
 
-        //JButton action Listener on quit button // calls splash page
+        //JButton action Listener on quit button // exits the game
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -450,8 +455,6 @@ public class DisplayWindow {
                 window.dispose();
             }
         });
-
-
         window.revalidate();
         window.repaint();
     }

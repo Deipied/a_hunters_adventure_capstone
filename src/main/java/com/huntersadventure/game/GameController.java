@@ -223,8 +223,8 @@ public class GameController {
 //            System.out.println("Enter a command below.");
 //            System.out.println(">");
 //            input = in.readLine();
-            GUI.mainText.append("\nEnter a command below.  " +
-                    ">");
+            //GUI.mainText.append("\nEnter a command below.  " +
+                    //">");
             synchronized (GameController.class) {
                 GameController.class.wait();
             }
@@ -555,7 +555,7 @@ public class GameController {
                                 .findFirst().orElse(null));
                         p1.getLocation().getItems().remove(commandTwo);
                         CombatInventory.testCombatInventory(GUI, p1);
-                        return "You pick up the " + commandTwo + ".";
+                        return "You picked up the " + commandTwo + ".";
                     }
                 }
             } else {
