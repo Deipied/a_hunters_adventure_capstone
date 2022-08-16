@@ -5,28 +5,24 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.sound.sampled.AudioInputStream;
 import java.io.File;
+import java.net.URL;
 
 public class Music {
 
     //musicFile must be in .wav format
-    public static final String musicLocation = "src/main/resources/GameText/Now-We-Ride.wav";
+    public static final URL musicLocation = ClassLoader.getSystemResource("GameText/Now-We-Ride.wav");
     static Clip clip;
     static long clipTime;
 
-    public static void playMusic(String musicLocation){
+    public static void playMusic(URL musicLocation){
         try
         {
-           File musicPath = new File(Music.musicLocation) ;
-           if (musicPath.exists()){
+           URL musicPath = new URL(String.valueOf(Music.musicLocation)) ;
                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
                clip = AudioSystem.getClip();
                clip.open(audioInput);
                clip.start();
                clip.loop(Clip.LOOP_CONTINUOUSLY);
-           }
-           else{
-               System.out.println("Can't find music file");
-           }
         }
         catch(Exception e)
         {
